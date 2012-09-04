@@ -49,12 +49,6 @@ def index():
         "index.html.tpl"
     )
 
-@app.route("/share", methods = ("GET",))
-def share():
-    return flask.render_template(
-        "share.html.tpl"
-    )
-
 @app.errorhandler(404)
 def handler_404(error):
     return str(error)
