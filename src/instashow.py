@@ -68,13 +68,13 @@ def index():
     url = _ensure_token()
     if url: return flask.redirect(url)
 
-    url = BASE_URL + "v1/tags/dog/media/recent"
+    url = BASE_URL + "v1/media/popular"
     contents_s = _get_data(url)
-    data = contents_s.get("data", [])
+    media = contents_s.get("data", [])
 
     return flask.render_template(
         "index.html.tpl",
-        data = data
+        media = media
     )
 
 @app.route("/oauth", methods = ("GET",))
@@ -133,11 +133,12 @@ def tags(tag):
 
     url = BASE_URL + "v1/tags/%s/media/recent" % tag
     contents_s = _get_data(url)
-    data = contents_s.get("data", [])
+    media = contents_s.get("data", [])
 
     return flask.render_template(
-        "index.html.tpl",
-        data = data
+        "tags.html.tpl",
+        tag = tag,
+        media = media
     )
 
 @app.errorhandler(404)
