@@ -81,7 +81,7 @@ def index():
 def oauth():
     code = flask.request.args.get("code", None)
 
-    url = "https://api.instagram.com/oauth/access_token"
+    url = BASE_URL + "oauth/access_token"
     values = {
         "client_id" : CLIENT_ID,
         "client_secret" : CLIENT_SECRET,
@@ -97,6 +97,28 @@ def oauth():
     return flask.redirect(
         flask.url_for("index")
     )
+
+@app.route("/subscribe/<tag>", methods = ("GET",))
+def subscribe(tag):
+    url = BASE_URL + "v1/subscriptions/"
+    values = {
+        "client_id" : CLIENT_ID,
+        "client_secret" : CLIENT_SECRET,
+        "object" : "tag",
+        "object_id" : tag,
+        "callback_url" : "http://hivespeed.dyndns.org:5005/tobias"
+    }
+
+    contents_s = _post_data(url, values, authenticate = False)
+    print contents_s
+
+    return flask.redirect(
+        flask.url_for("index")
+    )
+
+@app.route("/notify", methods = ("GET", "POST"))
+def notify(tag):
+    print "notificado"
 
 @app.route("/tags/<tag>", methods = ("GET",))
 def tags(tag):
