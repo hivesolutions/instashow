@@ -1,0 +1,216 @@
+@charset "utf-8";
+
+/*
+ Hive iFriday System
+ Copyright (C) 2008-2012 Hive Solutions Lda.
+
+ This file is part of Hive iFriday System.
+
+ Hive iFriday System is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Hive iFriday System is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Hive iFriday System. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*
+ __author__    = João Magalhães <joamag@hive.pt>
+ __version__   = 1.0.0
+ __revision__  = $LastChangedRevision$
+ __date__      = $LastChangedDate$
+ __copyright__ = Copyright (c) 2010-2012 Hive Solutions Lda.
+ __license__   = GNU General Public License (GPL), Version 3
+*/
+
+@font-face {
+    font-family: Franchise;
+    src: local("Franchise Bold"), local("Franchise-Bold"),  url(../fonts/franchiseb.ttf);
+    font-weight: bold;
+}
+
+body {
+    background-color: #2d2d2d;
+    color: #f0f0f0;
+    font-family: Arial, Helvetica, "sans serif";
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    text-align: center;
+    user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+}
+
+#content {
+    margin: 0px auto 0px auto;
+}
+
+#footer {
+    color: #c0c0c0;
+    font-size: 12px;
+    margin: 24px auto 24px auto;
+}
+
+.overlay {
+    background-color: #1d1d1d;
+    opacity: 0.6;
+    z-index: 20;
+}
+
+.window {
+    z-index: 30;
+}
+
+.clear {
+    clear: both;
+}
+
+.logo {
+    background: transparent url(../images/logotype.png) no-repeat;
+    height: 40px;
+    margin: 28px auto 0px auto;
+    width: 102px;
+}
+
+.counter {
+    cursor: pointer;
+    margin: 106px auto 82px auto;
+    text-align: center;
+    width: 296px;
+}
+
+.counter .time {
+    background: transparent url(../images/time-hole.png) no-repeat;
+    float: left;
+    height: 84px;
+    margin: 0px 2px 0px 2px;
+    padding: 8px 0px 8px 0px;
+    width: 66px;
+}
+
+.counter .time .value {
+    font-size: 42px;
+    font-weight: bold;
+}
+
+.counter .time .label {
+    color: #c0c0c0;
+    font-family: Arial;
+    font-size: 10px;
+}
+
+.stroke {
+    background: transparent none no-repeat;
+    cursor: pointer;
+    display: none;
+    height: 240px;
+    margin: 24px auto 24px auto;
+    width: 320px;
+}
+
+.stroke.stroke-1 {
+    background-image: url(../images/stroke_1.png);
+}
+
+.stroke.stroke-2 {
+    background-image: url(../images/stroke_2.png);
+}
+
+.stroke.stroke-3 {
+    background-image: url(../images/stroke_3.png);
+}
+
+.stroke.stroke-4 {
+    background-image: url(../images/stroke_4.png);
+}
+
+.stroke.stroke-5 {
+    background-image: url(../images/stroke_5.png);
+}
+
+.share {
+    background: transparent url(../images/share.png) no-repeat;
+    height: 80px;
+    margin: 0px auto 42px auto;
+    width: 80px;
+}
+
+.share.click {
+    background-position: 0px -80px;
+}
+
+.list.list-messages {
+    list-style: none;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+.list.list-messages li {
+    background: transparent url(../images/arrow-right.png) no-repeat right center;
+    border-bottom: 1px solid #1d1d1d;
+    border-top: 1px solid #666666;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 16px 8px 16px 8px;
+    text-align: left;
+}
+
+.list.list-messages li:hover {
+    background-color: #4d4d4d;
+}
+
+.list.list-messages li.click {
+    background-color: #4d4d4d;
+}
+
+.list.list-messages li:first-child {
+    border-top: 1px solid transparent;
+}
+
+.list.list-messages li:last-child {
+    border-bottom: 1px solid transparent;
+}
+
+.modal {
+    background-color: #4d4d4d;
+    border: 1px solid #888888;
+    height: 64x;
+    margin: 0px auto 0px auto;
+    position: absolute;
+    width: 180px;
+}
+
+.modal.services {
+    height: 64px;
+}
+
+.service {
+    background: transparent none no-repeat center center;
+    float: left;
+    height: 64px;
+    width: 100%;
+}
+
+.service:hover {
+    background-color: #3d3d3d;
+}
+
+.service.click {
+    background-color: #2d2d2d;
+}
+
+.service.twitter {
+    background-image: url(../images/twitter.png);
+}
+
+.service.facebook {
+    background-image: url(../images/facebook.png);
+}
