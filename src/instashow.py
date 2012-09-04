@@ -105,8 +105,9 @@ def subscribe(tag):
         "client_id" : CLIENT_ID,
         "client_secret" : CLIENT_SECRET,
         "object" : "tag",
+        "aspect" : "media",
         "object_id" : tag,
-        "callback_url" : "http://hivespeed.dyndns.org:5005/tobias"
+        "callback_url" : "http://hivespeed.dyndns.org:5005/notify"
     }
 
     contents_s = _post_data(url, values, authenticate = False)
@@ -117,8 +118,13 @@ def subscribe(tag):
     )
 
 @app.route("/notify", methods = ("GET", "POST"))
-def notify(tag):
-    print "notificado"
+def notify():
+    if flask.request.method == "GET":
+        chalenge = flask.request.args.get("hub.challenge", None)
+        return chalenge
+    else:
+        print "notificacao !!!!"
+        return ""
 
 @app.route("/tags/<tag>", methods = ("GET",))
 def tags(tag):
