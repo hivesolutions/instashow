@@ -3,7 +3,7 @@
     {% block head %}
         {% include "partials/content_type.html.tpl" %}
         {% include "partials/includes.html.tpl" %}
-        <title>iFriday</title>
+        <title>Instashow</title>
     {% endblock %}
 </head>
 <body class="ux">

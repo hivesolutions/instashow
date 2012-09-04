@@ -25,4 +25,3 @@
 
 jQuery(document).ready(function() {
 });
-
