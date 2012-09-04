@@ -1,23 +1,23 @@
 @charset "utf-8";
 
 /*
- Hive Instashow System
+ Hive Cameria System
  Copyright (C) 2008-2012 Hive Solutions Lda.
 
- This file is part of Hive Instashow System.
+ This file is part of Hive Cameria System.
 
- Hive Instashow System is free software: you can redistribute it and/or modify
+ Hive Cameria System is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- Hive Instashow System is distributed in the hope that it will be useful,
+ Hive Cameria System is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Hive Instashow System. If not, see <http://www.gnu.org/licenses/>.
+ along with Hive Cameria System. If not, see <http://www.gnu.org/licenses/>.
 */
 
 /*
@@ -29,188 +29,292 @@
  __license__   = GNU General Public License (GPL), Version 3
 */
 
-@font-face {
-    font-family: Franchise;
-    src: local("Franchise Bold"), local("Franchise-Bold"),  url(../fonts/franchiseb.ttf);
-    font-weight: bold;
+::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
 }
 
-body {
-    background-color: #2d2d2d;
-    color: #f0f0f0;
-    font-family: Arial, Helvetica, "sans serif";
-    margin: 0px 0px 0px 0px;
-    padding: 0px 0px 0px 0px;
-    text-align: center;
-    user-select: none;
-    -o-user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
+::-webkit-scrollbar-track {
+    background-color: #dddddd;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #bbbbbb;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #aaaaaa;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background-color: #cccccc;
+}
+
+#header {
 }
 
 #content {
-    margin: 0px auto 0px auto;
 }
 
 #footer {
-    color: #c0c0c0;
+    line-height: 26px;
+    margin: 20px 0px 0px 0px;
+}
+
+#overlay {
+    display: none;
+    left: 0px;
+    top: 0px;
+}
+
+html {
+    overflow-y: scroll;
+}
+
+body {
+    color: #666666;
+    font-family: "Garamond", "Georgia", "serif";
+    font-size: 16px;
+    margin: 20px auto 20px auto;
+    padding: 12px 12px 12px 12px;
+    text-align: center;
+    width: 620px;
+}
+
+body.wide {
+    width: 820px;
+}
+
+body.uwide {
+    width: 1280px;
+}
+
+body.full {
+    width: inherit;
+}
+
+h1, h2, h3, h4, h5 {
+    color: #4d4d4d;
+}
+
+a {
+    color: #3668c6;
+    text-decoration: none;
+}
+
+a.active {
+    font-weight: bold;
+}
+
+a:hover {
+    border-bottom: 1px solid #3668c6;
+    padding-bottom: 2px;
+}
+
+form {
+    margin: 46px auto 46px auto;
+    width: 540px;
+}
+
+table {
+    margin: 20px 0px 32px 0px;
+    width: 620px;
+}
+
+table td {
+    font-size: 18px;
+    padding: 8px 20px 8px 20px;
+}
+
+table td.label {
+    color: #888888;
+}
+
+table td.left {
+    text-align: left;
+}
+
+table td.right {
+    text-align: right;
+}
+
+input {
+    background-color: #fcfcfc;
+    border: 1px solid #dddddd;
+    color: #2d2d2d;
+    font-family: "Garamond", "Georgia", "serif";
+    font-size: 20px;
+    height: 40px;
+    outline: none;
+    padding: 0px 8px 0px 8px;
+    width: 524px;
+}
+
+input.small {
+    width: 324px;
+}
+
+input.lower {
+    color: #999999;
+}
+
+input:focus {
+    border-color: #3668c6;
+}
+
+input::-webkit-input-placeholder {
+    color: #999999;
+}
+
+input:-moz-placeholder {
+    color: #999999;
+}
+
+textarea {
+    background-color: #fcfcfc;
+    border: 1px solid #dddddd;
+    color: #2d2d2d;
+    font-family: "Garamond", "Georgia", "serif";
+    font-size: 20px;
+    height: 140px;
+    outline: none;
+    padding: 8px 8px 8px 8px;
+    width: 524px;
+}
+
+textarea:focus {
+    border-color: #3668c6;
+}
+
+textarea::-webkit-input-placeholder {
+    color: #aaaaaa;
+}
+
+textarea:-moz-placeholder {
+    color: #aaaaaa;
+}
+
+label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+ul {
+    margin: 20px 0px 20px 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+ul li {
+    cursor: default;
+    list-style: none;
+    margin: 12px 0px 12px 0px;
+    padding: 12px 0px 12px 0px;
+}
+
+ul li.selected {
+    background-color: #f6f6f6;
+}
+
+ul li:hover {
+    background-color: #f6f6f6;
+}
+
+ul li .name {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+ul li .description {
+    font-size: 18px;
+}
+
+pre {
+    background-color: #f6f6f6;
     font-size: 12px;
-    margin: 24px auto 24px auto;
-}
-
-.overlay {
-    background-color: #1d1d1d;
-    opacity: 0.6;
-    z-index: 20;
-}
-
-.window {
-    z-index: 30;
+    line-height: 18px;
+    margin: 20px 0px 20px 0px;
+    padding: 12px 12px 12px 12px;
+    text-align: left;
 }
 
 .clear {
     clear: both;
 }
 
-.logo {
-    background: transparent url(../images/logotype.png) no-repeat;
-    height: 40px;
-    margin: 28px auto 0px auto;
-    width: 102px;
-}
-
-.counter {
-    cursor: pointer;
-    margin: 106px auto 82px auto;
+.label {
     text-align: center;
-    width: 296px;
 }
 
-.counter .time {
-    background: transparent url(../images/time-hole.png) no-repeat;
-    float: left;
-    height: 84px;
-    margin: 0px 2px 0px 2px;
-    padding: 8px 0px 8px 0px;
-    width: 66px;
+.input {
+    font-size: 20px;
+    margin: 10px 0px 26px 0px;
+    text-align: center;
 }
 
-.counter .time .value {
-    font-size: 42px;
+.button {
+    font-size: 22px;
     font-weight: bold;
+    margin: 0px 4px 0px 4px;
 }
 
-.counter .time .label {
-    color: #c0c0c0;
-    font-family: Arial;
-    font-size: 10px;
+.button:hover {
+    border-bottom: 1px solid #666666;
+    padding-bottom: 2px;
 }
 
-.stroke {
-    background: transparent none no-repeat;
-    cursor: pointer;
-    display: none;
-    height: 240px;
-    margin: 24px auto 24px auto;
-    width: 320px;
+.links {
+    font-size: 18px;
 }
 
-.stroke.stroke-1 {
-    background-image: url(../images/stroke_1.png);
+.links.sub-links {
+    font-size: 16px;
+    margin-top: 6px;
 }
 
-.stroke.stroke-2 {
-    background-image: url(../images/stroke_2.png);
+.quote {
+    font-size: 18px;
+    line-height: 24px;
+    margin: 20px 0px 20px 0px;
 }
 
-.stroke.stroke-3 {
-    background-image: url(../images/stroke_3.png);
+.online,
+.passed,
+.valid {
+    color: #32951b;
 }
 
-.stroke.stroke-4 {
-    background-image: url(../images/stroke_4.png);
+.offline,
+.failed,
+.invalid {
+    color: #c31f30;
 }
 
-.stroke.stroke-5 {
-    background-image: url(../images/stroke_5.png);
+.separator-horizontal {
+    background: transparent url(../images/separator-horizontal.png) no-repeat center center;
+    height: 10px;
+    margin: 12px auto 12px auto;
+    width: 260px;
 }
 
-.share {
-    background: transparent url(../images/share.png) no-repeat;
-    height: 80px;
-    margin: 0px auto 42px auto;
-    width: 80px;
+.recursion-set {
+    font-size: 20px;
+    margin: 20px 0px 32px 0px;
+    text-align: center;
 }
 
-.share.click {
-    background-position: 0px -80px;
+.recursion {
+    margin: 0px 12px 0px 12px;
+    text-align: center;
+    width: 24px;
 }
 
-.list.list-messages {
-    list-style: none;
-    margin: 0px 0px 0px 0px;
-    padding: 0px 0px 0px 0px;
+.images {
+    margin: 24px 0px 24px 0px;
 }
 
-.list.list-messages li {
-    background: transparent url(../images/arrow-right.png) no-repeat right center;
-    border-bottom: 1px solid #1d1d1d;
-    border-top: 1px solid #666666;
-    cursor: pointer;
-    font-size: 14px;
-    padding: 16px 8px 16px 8px;
-    text-align: left;
-}
-
-.list.list-messages li:hover {
-    background-color: #4d4d4d;
-}
-
-.list.list-messages li.click {
-    background-color: #4d4d4d;
-}
-
-.list.list-messages li:first-child {
-    border-top: 1px solid transparent;
-}
-
-.list.list-messages li:last-child {
-    border-bottom: 1px solid transparent;
-}
-
-.modal {
-    background-color: #4d4d4d;
-    border: 1px solid #888888;
-    height: 64x;
-    margin: 0px auto 0px auto;
-    position: absolute;
-    width: 180px;
-}
-
-.modal.services {
-    height: 64px;
-}
-
-.service {
-    background: transparent none no-repeat center center;
-    float: left;
-    height: 64px;
-    width: 100%;
-}
-
-.service:hover {
-    background-color: #3d3d3d;
-}
-
-.service.click {
-    background-color: #2d2d2d;
-}
-
-.service.twitter {
-    background-image: url(../images/twitter.png);
-}
-
-.service.facebook {
-    background-image: url(../images/facebook.png);
+.images img {
+    background: transparent url(../images/pattern.png) repeat left top;
+    border-radius: 6px 6px 6px 6px;
+    -moz-border-radius: 6px 6px 6px 6px;
+    -webkit-border-radius: 6px 6px 6px 6px;
 }
