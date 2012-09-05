@@ -77,6 +77,12 @@ def index():
         media = media
     )
 
+@app.route("/about", methods = ("GET",))
+def about():
+    return flask.render_template(
+        "about.html.tpl"
+    )
+
 @app.route("/oauth", methods = ("GET",))
 def oauth():
     code = flask.request.args.get("code", None)
@@ -110,7 +116,7 @@ def subscribe(tag):
         "callback_url" : "http://hivespeed.dyndns.org:5005/notify"
     }
 
-    contents_s = _post_data(url, values, authenticate = False)
+    contents_s = _get_data(url, values, authenticate = False)
     print contents_s
 
     return flask.redirect(

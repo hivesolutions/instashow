@@ -318,3 +318,8 @@ pre {
     -moz-border-radius: 6px 6px 6px 6px;
     -webkit-border-radius: 6px 6px 6px 6px;
 }
+
+.images a:hover {
+    border-bottom: none;
+    padding-bottom: none;
+}

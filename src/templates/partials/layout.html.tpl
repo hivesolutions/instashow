@@ -13,9 +13,9 @@
             <h1>{% block name %}{% endblock %}</h1>
             <div class="links">
                 {% if link == "home" %}
-                    <a href="#" class="active">home</a>
+                    <a href="{{ url_for('index') }}" class="active">home</a>
                 {% else %}
-                    <a href="#">home</a>
+                    <a href="{{ url_for('index') }}">home</a>
                 {% endif %}
                 //
                 {% if link == "sets" %}
@@ -30,16 +30,10 @@
                     <a href="#">cameras</a>
                 {% endif %}
                 //
-                {% if link == "devices" %}
-                    <a href="#" class="active">devices</a>
-                {% else %}
-                    <a href="#">devices</a>
-                {% endif %}
-                //
                 {% if link == "about" %}
-                    <a href="#" class="active">about</a>
+                    <a href="{{ url_for('about') }}" class="active">about</a>
                 {% else %}
-                    <a href="#">about</a>
+                    <a href="{{ url_for('about') }}">about</a>
                 {% endif %}
             </div>
         {% endblock %}
