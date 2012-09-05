@@ -74,13 +74,15 @@ def index():
 
     return flask.render_template(
         "index.html.tpl",
+        link = "home",
         media = media
     )
 
 @app.route("/about", methods = ("GET",))
 def about():
     return flask.render_template(
-        "about.html.tpl"
+        "about.html.tpl",
+        link = "about"
     )
 
 @app.route("/oauth", methods = ("GET",))
@@ -143,6 +145,7 @@ def tags(tag):
 
     return flask.render_template(
         "tags.html.tpl",
+        link = "tags",
         tag = tag,
         media = media
     )

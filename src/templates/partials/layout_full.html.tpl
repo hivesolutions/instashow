@@ -18,16 +18,10 @@
                     <a href="{{ url_for('index') }}">home</a>
                 {% endif %}
                 //
-                {% if link == "sets" %}
-                    <a href="#" class="active">sets</a>
+                {% if link == "tags" %}
+                    <a href="{{ url_for('tags', tag = 'portugal') }}" class="active">tags</a>
                 {% else %}
-                    <a href="#">sets</a>
-                {% endif %}
-                //
-                {% if link == "cameras" %}
-                    <a href="#" class="active">cameras</a>
-                {% else %}
-                    <a href="#">cameras</a>
+                    <a href="{{ url_for('tags', tag = 'portugal') }}">tags</a>
                 {% endif %}
                 //
                 {% if link == "about" %}
