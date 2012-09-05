@@ -59,6 +59,10 @@ BASE_URL = "https://api.instagram.com/"
 """ The base url to be used to compose the various
 complete url values for the various operations """
 
+REDIRECT_URL = "http://localhost:5000/oauth"
+""" The redirect base url to be used as the base value
+for the construction of the base url instances """
+
 app = flask.Flask(__name__)
 app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(31)
 
@@ -94,13 +98,13 @@ def oauth():
         "client_id" : CLIENT_ID,
         "client_secret" : CLIENT_SECRET,
         "grant_type" : "authorization_code",
-        "redirect_uri" : "http://localhost:5000/oauth",
+        "redirect_uri" : REDIRECT_URL,
         "code" : code
     }
 
     contents_s = _post_data(url, values, authenticate = False)
     access_token = contents_s["access_token"]
-    flask.session["access_token"] = access_token
+    flask.session["instashow.access_token"] = access_token
 
     return flask.redirect(
         flask.url_for("index")
@@ -164,7 +168,7 @@ def handler_exception(error):
 
 def _get_data(url, values = None, authenticate = True):
     values = values or {}
-    if authenticate: values["access_token"] = flask.session["access_token"]
+    if authenticate: values["access_token"] = flask.session["instashow.access_token"]
     data = urllib.urlencode(values)
     url = url + "?" + data
     response = urllib2.urlopen(url)
@@ -174,7 +178,7 @@ def _get_data(url, values = None, authenticate = True):
 
 def _post_data(url, values = None, authenticate = True):
     values = values or {}
-    if authenticate: values["access_token"] = flask.session["access_token"]
+    if authenticate: values["access_token"] = flask.session["instashow.access_token"]
     data = urllib.urlencode(values)
     request = urllib2.Request(url, data)
     response = urllib2.urlopen(request)
@@ -183,13 +187,13 @@ def _post_data(url, values = None, authenticate = True):
     return contents_s
 
 def _ensure_token():
-    access_token = flask.session.get("access_token", None)
+    access_token = flask.session.get("instashow.access_token", None)
     if access_token: return None
 
     url = BASE_URL + "oauth/authorize/"
     values = {
         "client_id" : CLIENT_ID,
-        "redirect_uri" : "http://localhost:5000/oauth",
+        "redirect_uri" : REDIRECT_URL,
         "response_type" : "code"
     }
 
