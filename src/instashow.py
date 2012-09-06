@@ -122,8 +122,25 @@ def subscribe(tag):
         "callback_url" : "http://hivespeed.dyndns.org:5005/notify"
     }
 
-    contents_s = _get_data(url, values, authenticate = False)
-    print contents_s
+    _get_data(url, values, authenticate = False)
+
+    return flask.redirect(
+        flask.url_for("index")
+    )
+
+@app.route("/unsubscribe/<tag>", methods = ("GET",))
+def unsubscribe(tag):
+    url = BASE_URL + "v1/subscriptions/"
+    values = {
+        "client_id" : CLIENT_ID,
+        "client_secret" : CLIENT_SECRET,
+        "object" : "tag",
+        "aspect" : "media",
+        "object_id" : tag,
+        "callback_url" : "http://hivespeed.dyndns.org:5005/notify"
+    }
+
+    _delete_data(url, values, authenticate = False)
 
     return flask.redirect(
         flask.url_for("index")
@@ -182,6 +199,19 @@ def _post_data(url, values = None, authenticate = True):
     data = urllib.urlencode(values)
     request = urllib2.Request(url, data)
     response = urllib2.urlopen(request)
+    contents = response.read()
+    contents_s = json.loads(contents)
+    return contents_s
+
+def _delete_data(url, values = None, authenticate = True):
+    values = values or {}
+    if authenticate: values["access_token"] = flask.session["instashow.access_token"]
+    data = urllib.urlencode(values)
+    url = url + "?" + data
+    opener = urllib2.build_opener(urllib2.HTTPHandler)
+    request = urllib2.Request(url)
+    request.get_method = lambda: "DELETE"
+    response = opener.open(request)
     contents = response.read()
     contents_s = json.loads(contents)
     return contents_s
