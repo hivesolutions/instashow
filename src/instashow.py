@@ -66,7 +66,10 @@ for the construction of the base url instances """
 
 app = flask.Flask(__name__)
 app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(31)
-quorum.load(app)
+quorum.load(
+    app,
+    secret_key = SECRET_KEY
+)
 
 @app.route("/", methods = ("GET",))
 @app.route("/index", methods = ("GET",))
