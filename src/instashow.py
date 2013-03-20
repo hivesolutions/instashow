@@ -39,10 +39,11 @@ __license__ = "GNU General Public License (GPL), Version 3"
 
 import json
 import flask
-import quorum
 import urllib
 import urllib2
 import datetime
+
+import quorum
 
 SECRET_KEY = "ibyzsCBsaAydjIPgZKegzKOxngdImyMh"
 """ The "secret" key to be at the internal encryption
