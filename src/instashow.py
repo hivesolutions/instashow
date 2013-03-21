@@ -65,10 +65,10 @@ REDIRECT_URL = "http://localhost:5000/oauth"
 for the construction of the base url instances """
 
 app = flask.Flask(__name__)
-app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(31)
 quorum.load(
     app,
-    secret_key = SECRET_KEY
+    secret_key = SECRET_KEY,
+    PERMANENT_SESSION_LIFETIME = datetime.timedelta(31)
 )
 
 @app.route("/", methods = ("GET",))
