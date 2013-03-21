@@ -237,4 +237,4 @@ def _ensure_token():
     return url
 
 if __name__ == "__main__":
-    quorum.run()
+    quorum.run(server = "waitress")
