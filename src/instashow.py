@@ -66,9 +66,8 @@ CALLBACK_URL = "http://hivespeed.dyndns.org:8585/notify"
 """ The url to be used by the instagram server to notify
 the client (should be available externally) """
 
-app = flask.Flask(__name__)
-quorum.load(
-    app,
+app = quorum.load(
+    name = __name__,
     secret_key = SECRET_KEY,
     PERMANENT_SESSION_LIFETIME = datetime.timedelta(31)
 )
