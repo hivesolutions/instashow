@@ -37,10 +37,8 @@ __copyright__ = "Copyright (c) 2008-2012 Hive Solutions Lda."
 __license__ = "GNU General Public License (GPL), Version 3"
 """ The license for the module """
 
-import json
 import flask
 import urllib
-import urllib2
 import datetime
 
 import quorum
@@ -64,6 +62,10 @@ REDIRECT_URL = "http://localhost:5000/oauth"
 """ The redirect base url to be used as the base value
 for the construction of the base url instances """
 
+CALLBACK_URL = "http://hivespeed.dyndns.org:5005/notify"
+""" The url to be used by the instagram server to notify
+the client (should be available externally) """
+
 app = flask.Flask(__name__)
 quorum.load(
     app,
@@ -78,7 +80,7 @@ def index():
     if url: return flask.redirect(url)
 
     url = BASE_URL + "v1/media/popular"
-    contents_s = _get_data(url)
+    contents_s = get_json(url)
     media = contents_s.get("data", [])
 
     return flask.render_template(
@@ -99,15 +101,15 @@ def oauth():
     code = flask.request.args.get("code", None)
 
     url = BASE_URL + "oauth/access_token"
-    values = {
-        "client_id" : CLIENT_ID,
-        "client_secret" : CLIENT_SECRET,
-        "grant_type" : "authorization_code",
-        "redirect_uri" : REDIRECT_URL,
-        "code" : code
-    }
-
-    contents_s = _post_data(url, values, authenticate = False)
+    contents_s = post_json(
+        url,
+        authenticate = False,
+        client_id = CLIENT_ID,
+        client_secret = CLIENT_SECRET,
+        grant_type = "authorization_code",
+        redirect_uri = REDIRECT_URL,
+        code = code
+    )
     access_token = contents_s["access_token"]
     flask.session["instashow.access_token"] = access_token
 
@@ -118,16 +120,16 @@ def oauth():
 @app.route("/subscribe/<tag>", methods = ("GET",))
 def subscribe(tag):
     url = BASE_URL + "v1/subscriptions/"
-    values = {
-        "client_id" : CLIENT_ID,
-        "client_secret" : CLIENT_SECRET,
-        "object" : "tag",
-        "aspect" : "media",
-        "object_id" : tag,
-        "callback_url" : "http://hivespeed.dyndns.org:5005/notify"
-    }
-
-    _get_data(url, values, authenticate = False)
+    get_json(
+        url,
+        authenticate = False,
+        client_id = CLIENT_ID,
+        client_secret = CLIENT_SECRET,
+        object = "tag",
+        aspect = "media",
+        object_id = tag,
+        callback_url = CALLBACK_URL
+    )
 
     return flask.redirect(
         flask.url_for("index")
@@ -136,16 +138,16 @@ def subscribe(tag):
 @app.route("/unsubscribe/<tag>", methods = ("GET",))
 def unsubscribe(tag):
     url = BASE_URL + "v1/subscriptions/"
-    values = {
-        "client_id" : CLIENT_ID,
-        "client_secret" : CLIENT_SECRET,
-        "object" : "tag",
-        "aspect" : "media",
-        "object_id" : tag,
-        "callback_url" : "http://hivespeed.dyndns.org:5005/notify"
-    }
-
-    _delete_data(url, values, authenticate = False)
+    delete_json(
+        url,
+        authenticate = False,
+        client_id = CLIENT_ID,
+        client_secret = CLIENT_SECRET,
+        object = "tag",
+        aspect = "media",
+        object_id = tag,
+        callback_url = CALLBACK_URL
+    )
 
     return flask.redirect(
         flask.url_for("index")
@@ -157,7 +159,7 @@ def notify():
         chalenge = flask.request.args.get("hub.challenge", None)
         return chalenge
     else:
-        print "notificacao !!!!"
+        quorum.debug("Notification received from instagram")
         return ""
 
 @app.route("/tags/<tag>", methods = ("GET",))
@@ -166,7 +168,7 @@ def tags(tag):
     if url: return flask.redirect(url)
 
     url = BASE_URL + "v1/tags/%s/media/recent" % tag
-    contents_s = _get_data(url)
+    contents_s = get_json(url)
     media = contents_s.get("data", [])
 
     return flask.render_template(
@@ -188,38 +190,20 @@ def handler_413(error):
 def handler_exception(error):
     return str(error)
 
-def _get_data(url, values = None, authenticate = True):
-    values = values or {}
-    if authenticate: values["access_token"] = flask.session["instashow.access_token"]
-    data = urllib.urlencode(values)
-    url = url + "?" + data
-    response = urllib2.urlopen(url)
-    contents = response.read()
-    contents_s = json.loads(contents)
-    return contents_s
+def get_json(url, authenticate = True, **kwargs):
+    if authenticate: kwargs["access_token"] = flask.session["instashow.access_token"]
+    data = quorum.get_json(url, **kwargs)
+    return data
 
-def _post_data(url, values = None, authenticate = True):
-    values = values or {}
-    if authenticate: values["access_token"] = flask.session["instashow.access_token"]
-    data = urllib.urlencode(values)
-    request = urllib2.Request(url, data)
-    response = urllib2.urlopen(request)
-    contents = response.read()
-    contents_s = json.loads(contents)
-    return contents_s
+def post_json(url, authenticate = True, **kwargs):
+    if authenticate: kwargs["access_token"] = flask.session["instashow.access_token"]
+    data = quorum.post_json(url, **kwargs)
+    return data
 
-def _delete_data(url, values = None, authenticate = True):
-    values = values or {}
-    if authenticate: values["access_token"] = flask.session["instashow.access_token"]
-    data = urllib.urlencode(values)
-    url = url + "?" + data
-    opener = urllib2.build_opener(urllib2.HTTPHandler)
-    request = urllib2.Request(url)
-    request.get_method = lambda: "DELETE"
-    response = opener.open(request)
-    contents = response.read()
-    contents_s = json.loads(contents)
-    return contents_s
+def delete_json(url, authenticate = True, **kwargs):
+    if authenticate: kwargs["access_token"] = flask.session["instashow.access_token"]
+    data = quorum.delete_json(url, **kwargs)
+    return data
 
 def _ensure_token():
     access_token = flask.session.get("instashow.access_token", None)
