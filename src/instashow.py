@@ -62,7 +62,7 @@ REDIRECT_URL = "http://localhost:5000/oauth"
 """ The redirect base url to be used as the base value
 for the construction of the base url instances """
 
-CALLBACK_URL = "http://hivespeed.dyndns.org:5005/notify"
+CALLBACK_URL = "http://hivespeed.dyndns.org:8585/notify"
 """ The url to be used by the instagram server to notify
 the client (should be available externally) """
 
@@ -156,6 +156,7 @@ def unsubscribe(tag):
 @app.route("/notify", methods = ("GET", "POST"))
 def notify():
     if flask.request.method == "GET":
+        quorum.debug("Notification verification from instagram")
         chalenge = flask.request.args.get("hub.challenge", None)
         return chalenge
     else:
