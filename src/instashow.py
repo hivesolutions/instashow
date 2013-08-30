@@ -41,6 +41,7 @@ import flask
 import urllib
 import datetime
 
+import util
 import quorum
 
 SECRET_KEY = "ibyzsCBsaAydjIPgZKegzKOxngdImyMh"
@@ -162,14 +163,14 @@ def show_tag(tag):
     url = BASE_URL + "v1/tags/%s/media/recent" % tag
     contents_s = get_json(url)
     media = contents_s.get("data", [])
-    
+
     return flask.render_template(
         "tags/show.html.tpl",
         link = "tags",
         tag = tag,
         media = media
     )
-    
+
 @app.route("/photos", methods = ("GET",))
 def list_photos():
     url = _ensure_token()
@@ -185,7 +186,7 @@ def list_photos():
         id = id,
         media = media
     )
-    
+
 @app.route("/photos/<id>", methods = ("GET",))
 def show_photo(id):
     url = _ensure_token()
@@ -211,13 +212,10 @@ def print_photo(id):
     url = BASE_URL + "v1/media/%s" % id
     contents_s = get_json(url)
     media = contents_s.get("data", [])
+    print_image(media)
 
-    return flask.render_template(
-        "photos/show.html.tpl",
-        link = "photos",
-        sub_link = "print",
-        id = id,
-        media = media
+    return flask.redirect(
+        flask.url_for("show_photo", id = id)
     )
 
 @app.errorhandler(404)
@@ -231,6 +229,15 @@ def handler_413(error):
 @app.errorhandler(BaseException)
 def handler_exception(error):
     return str(error)
+
+def print_image(media):
+    images = media.get("images", {})
+    image = images.get("standard_resolution", {})
+    url = image.get("url", None)
+    if not url: raise RuntimeError("No url available for image")
+
+    data = quorum.get(url)
+    util.print_data(data)
 
 def get_json(url, authenticate = True, **kwargs):
     if authenticate: kwargs["access_token"] = flask.session["instashow.access_token"]

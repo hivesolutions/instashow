@@ -37,6 +37,9 @@ __copyright__ = "Copyright (c) 2008-2012 Hive Solutions Lda."
 __license__ = "GNU General Public License (GPL), Version 3"
 """ The license for the module """
 
+import os
+import uuid
+import tempfile
 import win32ui
 import win32print
 
@@ -48,6 +51,20 @@ VERT_RES = 10
 
 PHYSICAL_WIDTH = 110
 PHYSICAL_HEIGHT = 111
+
+def print_data(data, extension = ".jpg"):
+    dir_path = tempfile.mkdtemp()
+    image_name = str(uuid.uuid4())
+    image_path = os.path.join(dir_path, image_name + extension)
+
+    file = open(image_path, "wb")
+    try: file.write(data)
+    finally: file.close()
+
+    print_image(image_path)
+
+    os.remove(image_path)
+    os.removedirs(dir_path)
 
 def print_image(file_path):
     # retrieves the name (as a string) of the currently
