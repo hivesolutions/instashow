@@ -44,3 +44,12 @@
     border-bottom: none;
     padding-bottom: none;
 }
+
+.image {
+	margin: 24px 0px 24px 0px;
+}
+
+.image a:hover {
+    border-bottom: none;
+    padding-bottom: none;
+}

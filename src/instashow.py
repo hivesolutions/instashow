@@ -78,15 +78,7 @@ def index():
     url = _ensure_token()
     if url: return flask.redirect(url)
 
-    url = BASE_URL + "v1/media/popular"
-    contents_s = get_json(url)
-    media = contents_s.get("data", [])
-
-    return flask.render_template(
-        "index.html.tpl",
-        link = "home",
-        media = media
-    )
+    return list_photos()
 
 @app.route("/about", methods = ("GET",))
 def about():
@@ -163,18 +155,68 @@ def notify():
         return ""
 
 @app.route("/tags/<tag>", methods = ("GET",))
-def tags(tag):
+def show_tag(tag):
     url = _ensure_token()
     if url: return flask.redirect(url)
 
     url = BASE_URL + "v1/tags/%s/media/recent" % tag
     contents_s = get_json(url)
     media = contents_s.get("data", [])
-
+    
     return flask.render_template(
-        "tags.html.tpl",
+        "tags/show.html.tpl",
         link = "tags",
         tag = tag,
+        media = media
+    )
+    
+@app.route("/photos", methods = ("GET",))
+def list_photos():
+    url = _ensure_token()
+    if url: return flask.redirect(url)
+
+    url = BASE_URL + "v1/media/popular"
+    contents_s = get_json(url)
+    media = contents_s.get("data", [])
+
+    return flask.render_template(
+        "photos/list.html.tpl",
+        link = "photos",
+        id = id,
+        media = media
+    )
+    
+@app.route("/photos/<id>", methods = ("GET",))
+def show_photo(id):
+    url = _ensure_token()
+    if url: return flask.redirect(url)
+
+    url = BASE_URL + "v1/media/%s" % id
+    contents_s = get_json(url)
+    media = contents_s.get("data", [])
+
+    return flask.render_template(
+        "photos/show.html.tpl",
+        link = "photos",
+        sub_link = "show",
+        id = id,
+        media = media
+    )
+
+@app.route("/photos/<id>/print", methods = ("GET",))
+def print_photo(id):
+    url = _ensure_token()
+    if url: return flask.redirect(url)
+
+    url = BASE_URL + "v1/media/%s" % id
+    contents_s = get_json(url)
+    media = contents_s.get("data", [])
+
+    return flask.render_template(
+        "photos/show.html.tpl",
+        link = "photos",
+        sub_link = "print",
+        id = id,
         media = media
     )
 
@@ -188,6 +230,14 @@ def handler_413(error):
 
 @app.errorhandler(BaseException)
 def handler_exception(error):
+    
+    import traceback
+    import sys
+    print "Exception in user code:"
+    print '-'*60
+    traceback.print_exc(file=sys.stdout)
+    print '-'*60
+
     return str(error)
 
 def get_json(url, authenticate = True, **kwargs):
