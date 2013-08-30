@@ -230,14 +230,6 @@ def handler_413(error):
 
 @app.errorhandler(BaseException)
 def handler_exception(error):
-    
-    import traceback
-    import sys
-    print "Exception in user code:"
-    print '-'*60
-    traceback.print_exc(file=sys.stdout)
-    print '-'*60
-
     return str(error)
 
 def get_json(url, authenticate = True, **kwargs):
