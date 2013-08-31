@@ -167,14 +167,17 @@ def show_tag(tag):
     return flask.render_template(
         "tags/show.html.tpl",
         link = "tags",
+        sub_link = "show",
         tag = tag,
         media = media
     )
 
-@app.route("/tags/<tag>/sched", methods = ("GET",))
-def sched_tag(tag):
+@app.route("/tags/<tag>/schedule", methods = ("GET",))
+def schedule_tag(tag):
     url = _ensure_token()
     if url: return flask.redirect(url)
+
+    util.schedule_tag(tag)
 
     return flask.redirect(
         flask.url_for("show_tag", tag = tag)
