@@ -53,16 +53,26 @@ PHYSICAL_WIDTH = 110
 PHYSICAL_HEIGHT = 111
 
 def print_data(data, extension = ".jpg"):
+    # creates a new temporary directory path and then generates
+    # a random name using the uuid strategy and then uses it to
+    # create the complete image path by joining the directory path
+    # and the random image name and extension
     dir_path = tempfile.mkdtemp()
     image_name = str(uuid.uuid4())
     image_path = os.path.join(dir_path, image_name + extension)
 
+    # opens the temporary file for writing and writes the image
+    # data into it closing the file afterwards
     file = open(image_path, "wb")
     try: file.write(data)
     finally: file.close()
 
+    # prints the image into the default printer, this should
+    # take a while for the processing
     print_image(image_path)
 
+    # removes the now not required file path and directory
+    # path to avoid any remaining files store in the system
     os.remove(image_path)
     os.removedirs(dir_path)
 
