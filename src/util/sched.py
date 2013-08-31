@@ -38,6 +38,7 @@ __license__ = "GNU General Public License (GPL), Version 3"
 """ The license for the module """
 
 import time
+import shelve
 import threading
 
 from instashow import flask
@@ -66,18 +67,28 @@ class Scheduler(threading.Thread):
 
     def run(self):
         threading.Thread.run(self)
+        
+        self.data = shelve.open("C:/tobias.schelve")
 
-        self.running = True
-        while self.running:
-            url = BASE_URL + "v1/tags/%s/media/recent" % self.tag
-            contents_s = quorum.get_json(url, access_token = self.access_token)
-            media = contents_s.get("data", [])
+        try:
+            self.running = True
+            while self.running: self.iterate(); time.sleep(SLEEP_TIME)
+        finally:
+            self.data.close()
 
-            for _media in media:
-                print _media.id
+    def iterate(self):
+        printed = self.data.get("printed", [])
+        
+        url = BASE_URL + "v1/tags/%s/media/recent" % self.tag
+        contents_s = quorum.get_json(url, access_token = self.access_token)
+        media = contents_s.get("data", [])
 
-            time.sleep(SLEEP_TIME)
-
+        for _media in media:
+            media_id = _media["id"]
+            if media_id in printed: continue
+            printed.append(media_id)
+            print media_id
+            
 def schedule_tag(tag):
     access_token = flask.session["instashow.access_token"]
     scheduler = Scheduler(tag, access_token)
