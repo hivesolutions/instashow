@@ -50,6 +50,10 @@ SLEEP_TIME = 10.0
 """ The amount of time the loop should sleep between
 iterations in the scheduler loop """
 
+QUOTA_USER = 5
+""" The quota for each user, meaning the maximum
+number of prints per username """
+
 class Scheduler(threading.Thread):
     """
     Scheduler class that handles all the processing
@@ -99,6 +103,7 @@ class Scheduler(threading.Thread):
         # dictionary, these elements are going to be used in the
         # processing of the step operation
         printed = self.data.get("printed", [])
+        quotas = self.data.get("quotas", {})
 
         # retrieves the recent media objects for the
         # selected tag, this should provide the basis
@@ -116,15 +121,29 @@ class Scheduler(threading.Thread):
             media_id = _media["id"]
             if media_id in printed: continue
 
+            # retrieves the user object for the current media
+            # and then uses it to retrieves the identifier of
+            # the user, verifying if there's enough quota
+            user = _media["user"]
+            user_id = user["id"]
+            quota = quotas.get(user_id, 0)
+            if quota >= QUOTA_USER: continue
+
             # runs the print image operation in the media object
             # and then appends the media identifier to the list
             # of printed elements currently present
             print_image(_media)
             printed.append(media_id)
 
+            # updates the quota value for the user incrementing its
+            # value by one, meaning that the user has one less photo
+            # to be printed
+            quotas[user_id] = quota + 1
+
         # updates the data object (repository) and the runs the
         # sync operation to flush its contents to the file
         self.data["printed"] = printed
+        self.data["quotas"] = quotas
         self.data.sync()
 
 def schedule_tag(tag):
