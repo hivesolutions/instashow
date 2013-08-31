@@ -43,9 +43,10 @@ import threading
 
 from instashow import flask
 from instashow import quorum
+from instashow import print_image
 from instashow import BASE_URL
 
-SLEEP_TIME = 1.0
+SLEEP_TIME = 10.0
 """ The amount of time the loop should sleep between
 iterations in the scheduler loop """
 
@@ -67,18 +68,18 @@ class Scheduler(threading.Thread):
 
     def run(self):
         threading.Thread.run(self)
-        
+
         self.data = shelve.open("C:/tobias.schelve")
 
         try:
             self.running = True
-            while self.running: self.iterate(); time.sleep(SLEEP_TIME)
+            while self.running: self.step(); time.sleep(SLEEP_TIME)
         finally:
             self.data.close()
 
-    def iterate(self):
+    def step(self):
         printed = self.data.get("printed", [])
-        
+
         url = BASE_URL + "v1/tags/%s/media/recent" % self.tag
         contents_s = quorum.get_json(url, access_token = self.access_token)
         media = contents_s.get("data", [])
@@ -86,9 +87,13 @@ class Scheduler(threading.Thread):
         for _media in media:
             media_id = _media["id"]
             if media_id in printed: continue
+
+            print_image(_media)
             printed.append(media_id)
-            print media_id
-            
+
+        self.data["printed"] = printed
+        self.data.sync()
+
 def schedule_tag(tag):
     access_token = flask.session["instashow.access_token"]
     scheduler = Scheduler(tag, access_token)
