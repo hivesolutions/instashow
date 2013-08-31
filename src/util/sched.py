@@ -37,5 +37,24 @@ __copyright__ = "Copyright (c) 2008-2012 Hive Solutions Lda."
 __license__ = "GNU General Public License (GPL), Version 3"
 """ The license for the module """
 
+import time
+import threading
+
+SLEEP_TIME = 1.0
+""" The amount of time the loop should sleep between
+iterations in the scheduler loop """
+
+class Scheduler(threading.Thread):
+    
+    def run(self):
+        threading.Thread.run(self)
+        
+        self.running = True
+        
+        while self.running:
+            pass
+        
+            time.sleep(SLEEP_TIME)
+
 def schedule_tag(tag):
     pass
