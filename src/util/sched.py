@@ -59,7 +59,7 @@ class Scheduler(threading.Thread):
     This process should be able to control excessive
     user usage and should target certain tags only.
     """
-    
+
     global_lock = threading.RLock()
     """ The global lock object that constrains the step
     execution to one at a time per process, avoiding
@@ -91,23 +91,39 @@ class Scheduler(threading.Thread):
                 time.sleep(SLEEP_TIME)
         finally:
             # closes the data file, flushing the pending contents to
-            # the file (avoids data corruption) 
+            # the file (avoids data corruption)
             self.data.close()
 
     def step(self):
+        # retrieves the various elements from the data repository
+        # dictionary, these elements are going to be used in the
+        # processing of the step operation
         printed = self.data.get("printed", [])
 
+        # retrieves the recent media objects for the
+        # selected tag, this should provide the basis
+        # for the iteration tick operation
         url = BASE_URL + "v1/tags/%s/media/recent" % self.tag
         contents_s = quorum.get_json(url, access_token = self.access_token)
         media = contents_s.get("data", [])
 
+        # iterates over the complete set of media objects
+        # in order to set the printing order for them
         for _media in media:
+            # retrieves the identifier of the media and
+            # in case it's already presented in the printed
+            # list continues (no need to execute operation)
             media_id = _media["id"]
             if media_id in printed: continue
 
+            # runs the print image operation in the media object
+            # and then appends the media identifier to the list
+            # of printed elements currently present
             print_image(_media)
             printed.append(media_id)
 
+        # updates the data object (repository) and the runs the
+        # sync operation to flush its contents to the file
         self.data["printed"] = printed
         self.data.sync()
 
