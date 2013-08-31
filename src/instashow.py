@@ -171,6 +171,15 @@ def show_tag(tag):
         media = media
     )
 
+@app.route("/tags/<tag>/sched", methods = ("GET",))
+def sched_tag(tag):
+    url = _ensure_token()
+    if url: return flask.redirect(url)
+
+    return flask.redirect(
+        flask.url_for("show_tag", tag = tag)
+    )
+
 @app.route("/photos", methods = ("GET",))
 def list_photos():
     url = _ensure_token()
