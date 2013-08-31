@@ -59,6 +59,11 @@ class Scheduler(threading.Thread):
     This process should be able to control excessive
     user usage and should target certain tags only.
     """
+    
+    global_lock = threading.RLock()
+    """ The global lock object that constrains the step
+    execution to one at a time per process, avoiding
+    unwanted behavior """
 
     def __init__(self, tag, access_token, *args, **kwargs):
         threading.Thread.__init__(self, *args, **kwargs)
@@ -69,12 +74,24 @@ class Scheduler(threading.Thread):
     def run(self):
         threading.Thread.run(self)
 
-        self.data = shelve.open("C:/tobias.schelve")
+        # opens the shelve based data file that is going to be used
+        # to store the information regarding the printing scheduler
+        self.data = shelve.open("sched.shelve")
 
         try:
+            # sets the running flag to true and start the iteration
+            # based on the flag, running a step of the iteration
+            # process for each loop, and in each of them sleeps
+            # the process for a while
             self.running = True
-            while self.running: self.step(); time.sleep(SLEEP_TIME)
+            while self.running:
+                Scheduler.global_lock.acquire()
+                try: self.step()
+                finally: Scheduler.global_lock.release()
+                time.sleep(SLEEP_TIME)
         finally:
+            # closes the data file, flushing the pending contents to
+            # the file (avoids data corruption) 
             self.data.close()
 
     def step(self):
