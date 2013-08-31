@@ -40,21 +40,45 @@ __license__ = "GNU General Public License (GPL), Version 3"
 import time
 import threading
 
+from instashow import flask
+from instashow import quorum
+from instashow import BASE_URL
+
 SLEEP_TIME = 1.0
 """ The amount of time the loop should sleep between
 iterations in the scheduler loop """
 
 class Scheduler(threading.Thread):
+    """
+    Scheduler class that handles all the processing
+    of the printing of images contained in certain
+    tags from time to time.
+    
+    This process should be able to control excessive
+    user usage and should target certain tags only.
+    """
+    
+    def __init__(self, tag, access_token, *args, **kwargs):
+        threading.Thread.__init__(self, *args, **kwargs)
+        
+        self.tag = tag
+        self.access_token = access_token
     
     def run(self):
         threading.Thread.run(self)
         
         self.running = True
-        
         while self.running:
-            pass
+            url = BASE_URL + "v1/tags/%s/media/recent" % self.tag
+            contents_s = quorum.get_json(url, access_token = self.access_token)
+            media = contents_s.get("data", [])
+            
+            for _media in media:
+                print _media.id
         
             time.sleep(SLEEP_TIME)
 
-def schedule_tag(tag):
-    pass
+def schedule_tag(tag): 
+    access_token = flask.session["instashow.access_token"]
+    scheduler = Scheduler(tag, access_token)
+    scheduler.start()
