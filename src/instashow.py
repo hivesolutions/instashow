@@ -172,6 +172,26 @@ def show_tag(tag):
         media = media
     )
 
+@app.route("/tags/<tag>/slideshow", methods = ("GET",))
+def slideshow_tag(tag):
+    url = _ensure_token()
+    if url: return flask.redirect(url)
+
+    ## tenho de tentar sacar todos os que sao possiveis
+    ## para conseguir mostrar os mesmos !!!
+
+    url = BASE_URL + "v1/tags/%s/media/recent" % tag
+    contents_s = get_json(url)
+    media = contents_s.get("data", [])
+
+    return flask.render_template(
+        "tags/slideshow.html.tpl",
+        link = "tags",
+        sub_link = "slideshow",
+        tag = tag,
+        media = media
+    )
+
 @app.route("/tags/<tag>/schedule", methods = ("GET",))
 def schedule_tag(tag):
     url = _ensure_token()
