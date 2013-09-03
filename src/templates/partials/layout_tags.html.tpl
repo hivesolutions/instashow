@@ -8,6 +8,12 @@
             <a href="{{ url_for('show_tag', tag = tag) }}">show</a>
         {% endif %}
         //
+        {% if sub_link == "slideshow" %}
+            <a href="{{ url_for('slideshow_tag', tag = tag) }}" class="active">slideshow</a>
+        {% else %}
+            <a href="{{ url_for('slideshow_tag', tag = tag) }}">slideshow</a>
+        {% endif %}
+        //
         {% if sub_link == "schedule" %}
             <a href="{{ url_for('schedule_tag', tag = tag) }}" class="active">schedule</a>
         {% else %}
