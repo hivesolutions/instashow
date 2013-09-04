@@ -177,9 +177,6 @@ def slideshow_tag(tag):
     url = _ensure_token()
     if url: return flask.redirect(url)
 
-    ## tenho de tentar sacar todos os que sao possiveis
-    ## para conseguir mostrar os mesmos !!!
-
     url = BASE_URL + "v1/tags/%s/media/recent" % tag
     contents_s = get_json(url)
     media = contents_s.get("data", [])
@@ -191,7 +188,18 @@ def slideshow_tag(tag):
         tag = tag,
         media = media
     )
+    
+@app.route("/tags/<tag>/latest.json", methods = ("GET",), json = True)
+def latest_tag(tag):
+    url = _ensure_token()
+    if url: return flask.redirect(url)
 
+    url = BASE_URL + "v1/tags/%s/media/recent" % tag
+    contents_s = get_json(url)
+    media = contents_s.get("data", [])
+
+    return media
+    
 @app.route("/tags/<tag>/schedule", methods = ("GET",))
 def schedule_tag(tag):
     url = _ensure_token()
