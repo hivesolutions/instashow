@@ -160,6 +160,16 @@
                         pageList.width(_width * ratio);
                     });
 
+            // in case there's no images available in the current system
+            // this is a special case and the size is updated using a differrent
+            // strategy to avoid problems
+            if (images.length == 0) {
+                pages.height(height);
+                pages.width(width);
+                pageList.height(height);
+                pageList.width(width);
+            }
+
             // retrieves the values for position and image count for the
             // matched object as defined in its data value
             var position = matchedObject.data("position");
@@ -177,12 +187,20 @@
         };
 
         var refreshPhotos = function() {
-        	// retrieves the currently define url for the instashow update
-        	// and uses it for the update operation
+            // retrieves the currently define url for the instashow update
+            // and uses it for the update operation
             var url = matchedObject.attr("data-url");
             jQuery.ajax({
                         url : url,
                         success : function(data) {
+                            // retrieves the current position and in case it's
+                            // not the first one returns immediately cannot change
+                            // the contents of the instashow after the first picture
+                            var position = matchedObject.data("position");
+                            if (position != 0) {
+                                return;
+                            }
+
                             // retrieves the complete set of pages that are displaying
                             // an image and then removes then (no longer needed)
                             var images = jQuery(".page img", pages);
@@ -267,6 +285,13 @@
                     // the photos to the new ones
                     nextPosition == 0 && refreshPhotos();
 
+                    // in case the current position is the same as the next one
+                    // returns immediately to avoid the cross fade effect to the
+                    // same index (this is not wanted as the screen flicks)
+                    if (position == nextPosition) {
+                        return;
+                    }
+
                     // retrieves the reference to both the current and the next
                     // pages in the slideshow, to be able to use them in the
                     // cross fade effect
@@ -295,7 +320,7 @@
                     // updates the current status of the matched object
                     // with the next position of the slideshow
                     matchedObject.data("position", nextPosition);
-                }, 10000);
+                }, 15000);
 
         // retrieves the complete set of pages in the current object
         // this value will be used as the count of the object
