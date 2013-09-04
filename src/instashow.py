@@ -190,7 +190,7 @@ def slideshow_tag(tag):
     )
 
 @app.route("/tags/<tag>/latest.json", methods = ("GET",), json = True)
-def latest_tag(tag):
+def latest_tag_json(tag):
     url = _ensure_token()
     if url: return flask.redirect(url)
 
