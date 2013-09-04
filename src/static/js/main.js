@@ -176,6 +176,19 @@
             pages.scrollTop(scrollTop);
         };
 
+        var refreshPhotos = function() {
+            var url = matchedObject.attr("data-url");
+
+            jQuery.ajax({
+                        url : url,
+                        success : function(data) {
+                            var images = jQuery(".page img", pages);
+                            var pages = images.parents(".page");
+                            pages.remove();
+                        }
+                    });
+        };
+
         // creates the interval that will be used for the sliding of the
         // slideshow element
         setInterval(function() {
@@ -198,6 +211,10 @@
                     // to calculate the apropriate scroll top position
                     var nextPosition = position + 1 >= count ? 0 : position + 1;
                     var scrollTop = nextPosition * height;
+
+                    // in case the next position is the initial one must refresh
+                    // the photos to the new ones
+                    nextPosition == 0 && refreshPhotos();
 
                     // retrieves the reference to both the current and the next
                     // pages in the slideshow, to be able to use them in the
