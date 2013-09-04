@@ -40,11 +40,18 @@ __license__ = "GNU General Public License (GPL), Version 3"
 import os
 import uuid
 import tempfile
-import win32ui
-import win32print
 
-import PIL.Image
-import PIL.ImageWin
+try: import win32ui
+except: pass
+
+try: import win32print
+except: pass
+
+try: import PIL.Image
+except: pass
+
+try: import PIL.ImageWin
+except: pass
 
 HORZ_RES = 8
 VERT_RES = 10
