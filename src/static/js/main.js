@@ -34,6 +34,11 @@
             return;
         }
 
+        // tries to retrieve the currently defined timeout between
+        // images for the instashow service
+        var timeout = matchedObject.attr("data-timeout") || 10000;
+        timeout = parseInt(timeout);
+
         // retrieves the reference to the top level window component
         // to be able to access top level elements
         var _window = jQuery(window);
@@ -320,7 +325,7 @@
                     // updates the current status of the matched object
                     // with the next position of the slideshow
                     matchedObject.data("position", nextPosition);
-                }, 15000);
+                }, timeout);
 
         // retrieves the complete set of pages in the current object
         // this value will be used as the count of the object

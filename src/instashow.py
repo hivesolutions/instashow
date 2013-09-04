@@ -177,6 +177,8 @@ def slideshow_tag(tag):
     url = _ensure_token()
     if url: return flask.redirect(url)
 
+    timeout = quorum.get_field("timeout", 10000, cast = int)
+
     url = BASE_URL + "v1/tags/%s/media/recent" % tag
     contents_s = get_json(url)
     media = contents_s.get("data", [])
@@ -186,7 +188,8 @@ def slideshow_tag(tag):
         link = "tags",
         sub_link = "slideshow",
         tag = tag,
-        media = media
+        media = media,
+        timeout = timeout
     )
 
 @app.route("/tags/<tag>/latest.json", methods = ("GET",), json = True)
