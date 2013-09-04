@@ -29,6 +29,10 @@
  __license__   = GNU General Public License (GPL), Version 3
 */
 
+body.dark {
+    background-color: #000000;
+}
+
 .images {
     margin: 24px 0px 24px 0px;
 }
@@ -52,4 +56,18 @@
 .image a:hover {
     border-bottom: none;
     padding-bottom: none;
+}
+
+.instashow > .pages {
+    margin: 0px auto 0px auto;
+    overflow-y: hidden;
+}
+
+.instashow > .pages .page {
+    float: left;
+    line-height: 0px;
+}
+
+.instashow > .holder {
+    display: none;
 }
