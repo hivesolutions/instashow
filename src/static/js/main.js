@@ -185,6 +185,9 @@
                     var nextPosition = position + 1 >= count ? 0 : position + 1;
                     var scrollTop = nextPosition * height;
 
+                    // retrieves the reference to both the current and the next
+                    // pages in the slideshow, to be able to use them in the
+                    // cross fade effect
                     var current = jQuery(".page:nth-child(" + (position + 1)
                                     + ")", pages);
                     var next = jQuery(".page:nth-child(" + (nextPosition + 1)
@@ -198,6 +201,9 @@
                                 duration : 1000
                             });
 
+                    // hides the next panel and fade in and out the
+                    // next and current panels (creating the cross fade
+                    // effect for optimal experience)
                     next.hide();
                     next.fadeIn(1000);
                     current.fadeOut(1000, function() {
