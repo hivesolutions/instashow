@@ -29,6 +29,27 @@
  __license__   = GNU General Public License (GPL), Version 3
 */
 
+@font-face {
+    font-family: "Gotham";
+    src: local("Gotham Book"), local("Gotham-Book"), url(../fonts/Gotham-Book.otf);
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Gotham";
+    src: local("Gotham Bold"), local("Oxygen-Bold"), url(../fonts/Oxygen-Bold.otf);
+    font-style: normal;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: "BlackJack";
+    src: local("BlackJack"), local("BlackJack"), url(../fonts/BlackJack.ttf);
+    font-style: normal;
+    font-weight: 400;
+}
+
 body.dark {
     background-color: #000000;
 }
@@ -66,6 +87,58 @@ body.dark {
 .instashow > .pages .page {
     float: left;
     line-height: 0px;
+}
+
+.instashow > .pages .page.initial {
+    color: #ffffff;
+    font-size: 20px;
+    line-height: 28px;
+    text-align: center;
+}
+
+.instashow > .pages .page.initial .page-container {
+    padding: 24px 24px 24px 24px;
+}
+
+.instashow > .pages .page.initial h1 {
+    color: #ffffff;
+    font-family: Gotham;
+    font-size: 46px;
+    line-height: 50px;
+    margin: 24px 0px 6px 0px;
+    text-transform: uppercase;
+}
+
+.instashow > .pages .page.initial h2 {
+    color: #ffffff;
+    font-family: Gotham;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 26px;
+    margin: 0px 0px 64px 0px;
+    text-transform: uppercase;
+}
+
+.instashow > .pages .page.initial p {
+    margin: 64px 0px 0px 0px;
+}
+
+.instashow > .pages .page.initial strong {
+    color: #ee7064;
+}
+
+.instashow > .pages .page.initial .instagram {
+    background: transparent url(../images/icon-instagram.png) no-repeat;
+    height: 256px;
+    margin: 0px auto 0px auto;
+    width: 256px;
+}
+
+.instashow > .pages .page.initial .icon {
+    background: transparent url(../images/icon-white-small.png) no-repeat;
+    height: 64px;
+    margin: 64px auto 0px auto;
+    width: 64px;
 }
 
 .instashow > .holder {

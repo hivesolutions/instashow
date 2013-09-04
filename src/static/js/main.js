@@ -43,6 +43,11 @@
         // in display for the current structure
         _html.css("overflow-y", "auto");
 
+        // retrieves the reference to the initial page and adds the page
+        // class into it to be able to convert it
+        var initial = jQuery(".initial", matchedObject);
+        initial.addClass("page");
+
         // retrieves the reference to the complete set of photos
         // and images to be used for manipulation
         var photos = jQuery(".photo", matchedObject);
@@ -50,7 +55,7 @@
 
         // creates the pages panel and add it to the currently
         // matched object for reference
-        var pages = jQuery("<div class=\"pages\"></div>")
+        var pages = jQuery("<div class=\"pages\"></div>");
         matchedObject.append(pages);
 
         // creates a reference to the holder of the images in the
@@ -61,6 +66,10 @@
         // adds the complete set of photos to the holder in order
         // to store them for latter usage
         holder.append(photos);
+
+        // adds the the initial page at the begining of the pages
+        // section (it's going to be the first one)
+        pages.append(initial);
 
         // iterates over each of the images in the container to update
         // the values of their original sizes
@@ -113,13 +122,16 @@
             // retrieves the refenrece to the pages element and to
             // the complete set of images to be displayed
             var pages = jQuery(".pages", matchedObject);
+            var pageList = jQuery(".page", pages);
             var images = jQuery(".page img", pages);
 
             // iterates over all the images to resize them into the
             // proper size as defined by the current viewport
             images.each(function(index, element) {
-                        /// retrieves the current element (image) in iteration
+                        // retrieves the current element (image) in iteration
+                        // and the reference to the associated page element
                         var _element = jQuery(this);
+                        var page = _element.parents(".page");
 
                         // retrieves the currently defined height and width,
                         // should have been previously loaded
@@ -144,6 +156,8 @@
                         _element.width(_width * ratio);
                         pages.height(_height * ratio);
                         pages.width(_width * ratio);
+                        pageList.height(_height * ratio);
+                        pageList.width(_width * ratio);
                     });
 
             // retrieves the values for position and image count for the
