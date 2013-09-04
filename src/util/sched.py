@@ -69,11 +69,12 @@ class Scheduler(threading.Thread):
     execution to one at a time per process, avoiding
     unwanted behavior """
 
-    def __init__(self, tag, access_token, *args, **kwargs):
+    def __init__(self, tag, access_token, quota = QUOTA_USER, *args, **kwargs):
         threading.Thread.__init__(self, *args, **kwargs)
 
         self.tag = tag
         self.access_token = access_token
+        self.max_quota = quota
 
     def run(self):
         threading.Thread.run(self)
@@ -91,6 +92,7 @@ class Scheduler(threading.Thread):
             while self.running:
                 Scheduler.global_lock.acquire()
                 try: self.step()
+                except: pass
                 finally: Scheduler.global_lock.release()
                 time.sleep(SLEEP_TIME)
         finally:
@@ -127,7 +129,7 @@ class Scheduler(threading.Thread):
             user = _media["user"]
             user_id = user["id"]
             quota = quotas.get(user_id, 0)
-            if quota >= QUOTA_USER: continue
+            if quota >= self.max_quota: continue
 
             # runs the print image operation in the media object
             # and then appends the media identifier to the list
@@ -146,7 +148,7 @@ class Scheduler(threading.Thread):
         self.data["quotas"] = quotas
         self.data.sync()
 
-def schedule_tag(tag):
+def schedule_tag(tag, quota = QUOTA_USER):
     access_token = flask.session["instashow.access_token"]
-    scheduler = Scheduler(tag, access_token)
+    scheduler = Scheduler(tag, access_token, quota = quota)
     scheduler.start()

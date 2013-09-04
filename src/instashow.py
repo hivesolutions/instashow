@@ -208,7 +208,9 @@ def schedule_tag(tag):
     url = _ensure_token()
     if url: return flask.redirect(url)
 
-    util.schedule_tag(tag)
+    quota = quorum.get_field("quota", util.QUOTA_USER, int)
+
+    util.schedule_tag(tag, quota = quota)
 
     return flask.redirect(
         flask.url_for("show_tag", tag = tag)
