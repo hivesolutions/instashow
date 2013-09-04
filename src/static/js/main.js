@@ -177,14 +177,65 @@
         };
 
         var refreshPhotos = function() {
+        	// retrieves the currently define url for the instashow update
+        	// and uses it for the update operation
             var url = matchedObject.attr("data-url");
-
             jQuery.ajax({
                         url : url,
                         success : function(data) {
+                            // retrieves the complete set of pages that are displaying
+                            // an image and then removes then (no longer needed)
                             var images = jQuery(".page img", pages);
-                            var pages = images.parents(".page");
-                            pages.remove();
+                            var pagesList = images.parents(".page");
+                            pagesList.remove();
+
+                            // iterates over all the keys available for the data
+                            // to be able to creates the page for their representation
+                            for (var key in data) {
+                                // retrieves the media information for the current
+                                // key in iteration
+                                var media = data[key];
+
+                                // creates the element that will contain the photo
+                                // elements using the provided standard resolution url
+                                var photo = jQuery("<div class=\"photo\">"
+                                        + "<img src=\""
+                                        + media.images.standard_resolution.url
+                                        + "\" />" + "</div>");
+
+                                // creates the page element and adds it to the
+                                // list of pages for the current structure
+                                var page = jQuery("<div class=\"page\"></div>");
+                                pages.append(page);
+
+                                // adds the newly created photo element to the new
+                                // page sets it as the only contents of it
+                                page.append(photo);
+
+                                // retrieve the image component out of the photo
+                                // element to be used in attribute changes
+                                var image = jQuery("img", photo);
+
+                                // retrieve the size of the image as both height
+                                // and width to change the attribute storage for it
+                                var height = image.height() || 640;
+                                var width = image.width() || 640;
+
+                                // updates the height and the width of the current
+                                // element to the new height and width dimensions
+                                image.attr("data-height", height);
+                                image.attr("data-width", width);
+                            }
+
+                            // retrieves the current available list of pages for the
+                            // current matched object, the ones currently in display
+                            var pageList = jQuery(".pages > .page",
+                                    matchedObject);
+
+                            // updates the count of pages for the matched object, taking
+                            // into account the new pages to be displayed
+                            matchedObject.data("count", pageList.length)
+                            update();
                         }
                     });
         };
