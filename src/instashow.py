@@ -41,7 +41,6 @@ import flask
 import urllib
 import datetime
 
-import util
 import quorum
 
 SECRET_KEY = "ibyzsCBsaAydjIPgZKegzKOxngdImyMh"
@@ -316,3 +315,5 @@ def _ensure_token():
 
 if __name__ == "__main__":
     quorum.run(server = "waitress")
+
+import util
