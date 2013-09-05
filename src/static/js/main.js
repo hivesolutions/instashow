@@ -198,6 +198,13 @@
             jQuery.ajax({
                         url : url,
                         success : function(data) {
+                            // in case no valid data has been received (probably due
+                            // to a problem in the communication) the retrieval is
+                            // ignored and the function returns immediately
+                            if(!data) {
+                                return;
+                            }
+
                             // retrieves the current position and in case it's
                             // not the first one returns immediately cannot change
                             // the contents of the instashow after the first picture
