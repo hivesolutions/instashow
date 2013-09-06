@@ -37,9 +37,11 @@ __copyright__ = "Copyright (c) 2008-2012 Hive Solutions Lda."
 __license__ = "GNU General Public License (GPL), Version 3"
 """ The license for the module """
 
+import sys
 import time
 import shelve
 import threading
+import traceback
 
 from instashow import flask
 from instashow import quorum
@@ -92,7 +94,7 @@ class Scheduler(threading.Thread):
             while self.running:
                 Scheduler.global_lock.acquire()
                 try: self.step()
-                except: pass
+                except: traceback.print_exc(file = sys.stdout)
                 finally: Scheduler.global_lock.release()
                 time.sleep(SLEEP_TIME)
         finally:
