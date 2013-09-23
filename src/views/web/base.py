@@ -201,7 +201,7 @@ def schedule_tag(tag):
 
     quota = quorum.get_field("quota", util.QUOTA_USER, int)
 
-    schedule_tag(tag, quota = quota)
+    util.schedule_tag(tag, quota = quota)
 
     return flask.redirect(
         flask.url_for("show_tag", tag = tag)
