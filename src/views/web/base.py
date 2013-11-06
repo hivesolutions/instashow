@@ -60,7 +60,7 @@ REDIRECT_URL = "http://localhost:5000/oauth"
 """ The redirect base url to be used as the base value
 for the construction of the base url instances """
 
-CALLBACK_URL = "http://hivespeed.dyndns.org:8585/notify"
+CALLBACK_URL = "http://hq.hive.pt:8585/notify"
 """ The url to be used by the instagram server to notify
 the client (should be available externally) """
 
