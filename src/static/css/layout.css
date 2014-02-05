@@ -31,23 +31,23 @@
 
 @font-face {
     font-family: "Gotham";
-    src: local("Gotham Book"), local("Gotham-Book"), url(../fonts/Gotham-Book.otf);
     font-style: normal;
     font-weight: 400;
+    src: local("Gotham Book"), local("Gotham-Book"), url(../fonts/Gotham-Book.otf);
 }
 
 @font-face {
     font-family: "Gotham";
-    src: local("Gotham Bold"), local("Oxygen-Bold"), url(../fonts/Oxygen-Bold.otf);
     font-style: normal;
     font-weight: 700;
+    src: local("Gotham Bold"), local("Oxygen-Bold"), url(../fonts/Oxygen-Bold.otf);
 }
 
 @font-face {
     font-family: "BlackJack";
-    src: local("BlackJack"), local("BlackJack"), url(../fonts/BlackJack.ttf);
     font-style: normal;
     font-weight: 400;
+    src: local("BlackJack"), local("BlackJack"), url(../fonts/BlackJack.ttf);
 }
 
 body.dark {
