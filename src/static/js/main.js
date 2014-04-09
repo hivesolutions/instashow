@@ -201,7 +201,7 @@
                             // in case no valid data has been received (probably due
                             // to a problem in the communication) the retrieval is
                             // ignored and the function returns immediately
-                            if(!data) {
+                            if (!data) {
                                 return;
                             }
 
@@ -363,18 +363,7 @@
 })(jQuery);
 
 jQuery(document).ready(function() {
-            // retrieves the reference to the top level
-            // body element to apply the components in it
             var _body = jQuery("body");
-
-            // applies the various plugins to the body element
-            // this is considered the initial apply operation
-            // for the section specific plugins
-            _body.instashow_apply();
-
-            // registers for the applied event on the body to be
-            // notified of new apply operations and react to them
-            // in the sense of applying the specifics
             _body.bind("applied", function(event, base) {
                         base.instashow_apply();
                     });
