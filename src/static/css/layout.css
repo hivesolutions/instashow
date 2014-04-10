@@ -30,17 +30,17 @@
 */
 
 @font-face {
-    font-family: "Gotham Book";
+    font-family: "Gotham";
     font-style: normal;
     font-weight: 400;
     src: local("Gotham Book"), local("Gotham-Book"), url(../fonts/Gotham-Book.otf);
 }
 
 @font-face {
-    font-family: "Gotham Bold";
+    font-family: "Gotham";
     font-style: normal;
     font-weight: 700;
-    src: local("Gotham Bold"), local("Oxygen-Bold"), url(../fonts/Oxygen-Bold.otf);
+    src: local("Gotham Bold"), local("Gotham-Bold"), url(../fonts/Gotham-Bold.otf);
 }
 
 @font-face {
@@ -102,7 +102,7 @@ body.dark {
 
 .instashow > .pages .page.initial h1 {
     color: #ffffff;
-    font-family: "Gotham Book";
+    font-family: "Gotham";
     font-size: 46px;
     line-height: 50px;
     margin: 24px 0px 6px 0px;
@@ -111,7 +111,7 @@ body.dark {
 
 .instashow > .pages .page.initial h2 {
     color: #ffffff;
-    font-family: "Gotham Bold";
+    font-family: "Gotham";
     font-size: 22px;
     font-weight: bold;
     line-height: 26px;
