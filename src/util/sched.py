@@ -83,7 +83,11 @@ class Scheduler(threading.Thread):
 
         # opens the shelve based data file that is going to be used
         # to store the information regarding the printing scheduler
-        self.data = shelve.open("sched.shelve")
+        self.data = shelve.open(
+            "sched.shelve",
+            protocol = 2,
+            writeback = True
+        )
 
         try:
             # sets the running flag to true and start the iteration
