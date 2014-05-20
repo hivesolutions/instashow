@@ -236,12 +236,16 @@ def handler_404(error):
 def handler_413(error):
     return str(error)
 
-@app.errorhandler(BaseException)
-def handler_exception(error):
-    return str(error)
-
 @app.errorhandler(instagram.appier.OAuthAccessError)
 def handler_oauth(error):
+    if "ig.access_token" in flask.session: del flask.session["ig.access_token"]
+    if "ig.user_id" in flask.session: del flask.session["ig.user_id"]
+    return flask.redirect(
+        flask.request.url
+    )
+
+@app.errorhandler(BaseException)
+def handler_exception(error):
     return str(error)
 
 def print_image(media):
@@ -249,7 +253,6 @@ def print_image(media):
     image = images.get("standard_resolution", {})
     url = image.get("url", None)
     if not url: raise RuntimeError("No url available for image")
-
     data = quorum.get(url)
     util.print_data(data)
 
@@ -257,7 +260,7 @@ def _ensure_api():
     access_token = flask.session.get("ig.access_token", None)
     if access_token: return
     api = _get_api()
-    return api.oauth_authorize()
+    return api.oauth_authorize(state = flask.request.url)
 
 def _get_api():
     access_token = flask.session and flask.session.get("ig.access_token", None)
