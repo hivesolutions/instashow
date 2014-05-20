@@ -19,6 +19,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Hive Instashow System. If not, see <http://www.gnu.org/licenses/>.
 
+__author__ = "João Magalhães <joamag@hive.pt>"
+""" The author(s) of the module """
+
 __version__ = "1.0.0"
 """ The version of the module """
 
@@ -34,8 +37,15 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "GNU General Public License (GPL), Version 3"
 """ The license for the module """
 
-from . import api
-from . import web
+import instagram
 
-from .api import *
-from .web import *
+from instashow import quorum
+
+def get_api(access_token = None):
+    api = instagram.Api(
+        client_id = quorum.conf("INSTAGRAM_ID"),
+        client_secret = quorum.conf("INSTAGRAM_SECRET"),
+        redirect_url = quorum.conf("INSTAGRAM_REDIRECT_URL")
+    )
+    if access_token: api.access_token = access_token
+    return api

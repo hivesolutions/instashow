@@ -34,8 +34,10 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "GNU General Public License (GPL), Version 3"
 """ The license for the module """
 
-import printer
-import sched
+from . import base
+from . import printer
+from . import sched
 
-from printer import *
-from sched import *
+from .base import *
+from .printer import *
+from .sched import *

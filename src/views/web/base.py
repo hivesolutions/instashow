@@ -37,7 +37,7 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "GNU General Public License (GPL), Version 3"
 """ The license for the module """
 
-import urllib
+import instagram
 
 import util
 
@@ -56,7 +56,7 @@ BASE_URL = "https://api.instagram.com/"
 """ The base url to be used to compose the various
 complete url values for the various operations """
 
-REDIRECT_URL = "http://localhost:5000/oauth"
+REDIRECT_URL = "http://hq.hive.pt:8585/oauth"
 """ The redirect base url to be used as the base value
 for the construction of the base url instances """
 
@@ -67,9 +67,6 @@ the client (should be available externally) """
 @app.route("/", methods = ("GET",))
 @app.route("/index", methods = ("GET",))
 def index():
-    url = _ensure_token()
-    if url: return flask.redirect(url)
-
     return list_photos()
 
 @app.route("/about", methods = ("GET",))
@@ -81,57 +78,40 @@ def about():
 
 @app.route("/oauth", methods = ("GET",))
 def oauth():
-    code = flask.request.args.get("code", None)
+    code = quorum.get_field("code")
+    state = quorum.get_field("state")
 
-    url = BASE_URL + "oauth/access_token"
-    contents_s = post_json(
-        url,
-        authenticate = False,
-        client_id = CLIENT_ID,
-        client_secret = CLIENT_SECRET,
-        grant_type = "authorization_code",
-        redirect_uri = REDIRECT_URL,
-        code = code
-    )
-    access_token = contents_s["access_token"]
-    flask.session["instashow.access_token"] = access_token
+    api = _get_api()
+    access_token = api.oauth_access(code)
+    flask.session["ig.access_token"] = access_token
+    flask.session["ig.user_id"] = api.user_id
 
     return flask.redirect(
-        flask.url_for("index")
+        state or flask.url_for("index")
     )
 
 @app.route("/subscribe/<tag>", methods = ("GET",))
 def subscribe(tag):
-    url = BASE_URL + "v1/subscriptions/"
-    get_json(
-        url,
-        authenticate = False,
-        client_id = CLIENT_ID,
-        client_secret = CLIENT_SECRET,
+    api = _get_api()
+    api.subscribe(
         object = "tag",
         aspect = "media",
         object_id = tag,
         callback_url = CALLBACK_URL
     )
-
     return flask.redirect(
         flask.url_for("index")
     )
 
 @app.route("/unsubscribe/<tag>", methods = ("GET",))
 def unsubscribe(tag):
-    url = BASE_URL + "v1/subscriptions/"
-    delete_json(
-        url,
-        authenticate = False,
-        client_id = CLIENT_ID,
-        client_secret = CLIENT_SECRET,
+    api = _get_api()
+    api.unsubscribe(
         object = "tag",
         aspect = "media",
         object_id = tag,
         callback_url = CALLBACK_URL
     )
-
     return flask.redirect(
         flask.url_for("index")
     )
@@ -148,12 +128,11 @@ def notify():
 
 @app.route("/tags/<tag>", methods = ("GET",))
 def show_tag(tag):
-    url = _ensure_token()
+    url = _ensure_api()
     if url: return flask.redirect(url)
 
-    url = BASE_URL + "v1/tags/%s/media/recent" % tag
-    contents_s = get_json(url)
-    media = contents_s.get("data", [])
+    api = _get_api()
+    media = api.media_tag(tag)
 
     return flask.render_template(
         "tags/show.html.tpl",
@@ -165,14 +144,13 @@ def show_tag(tag):
 
 @app.route("/tags/<tag>/slideshow", methods = ("GET",))
 def slideshow_tag(tag):
-    url = _ensure_token()
+    url = _ensure_api()
     if url: return flask.redirect(url)
 
     timeout = quorum.get_field("timeout", 10000, cast = int)
 
-    url = BASE_URL + "v1/tags/%s/media/recent" % tag
-    contents_s = get_json(url)
-    media = contents_s.get("data", [])
+    api = _get_api()
+    media = api.media_tag(tag)
 
     return flask.render_template(
         "tags/slideshow.html.tpl",
@@ -185,18 +163,17 @@ def slideshow_tag(tag):
 
 @app.route("/tags/<tag>/latest.json", methods = ("GET",), json = True)
 def latest_tag_json(tag):
-    url = _ensure_token()
+    url = _ensure_api()
     if url: return flask.redirect(url)
 
-    url = BASE_URL + "v1/tags/%s/media/recent" % tag
-    contents_s = get_json(url)
-    media = contents_s.get("data", [])
+    api = _get_api()
+    media = api.media_tag(tag)
 
     return media
 
 @app.route("/tags/<tag>/schedule", methods = ("GET",))
 def schedule_tag(tag):
-    url = _ensure_token()
+    url = _ensure_api()
     if url: return flask.redirect(url)
 
     quota = quorum.get_field("quota", util.QUOTA_USER, int)
@@ -209,12 +186,11 @@ def schedule_tag(tag):
 
 @app.route("/photos", methods = ("GET",))
 def list_photos():
-    url = _ensure_token()
+    url = _ensure_api()
     if url: return flask.redirect(url)
 
-    url = BASE_URL + "v1/media/popular"
-    contents_s = get_json(url)
-    media = contents_s.get("data", [])
+    api = _get_api()
+    media = api.popular_media()
 
     return flask.render_template(
         "photos/list.html.tpl",
@@ -225,12 +201,11 @@ def list_photos():
 
 @app.route("/photos/<id>", methods = ("GET",))
 def show_photo(id):
-    url = _ensure_token()
+    url = _ensure_api()
     if url: return flask.redirect(url)
 
-    url = BASE_URL + "v1/media/%s" % id
-    contents_s = get_json(url)
-    media = contents_s.get("data", [])
+    api = _get_api()
+    media = api.get_media(id)
 
     return flask.render_template(
         "photos/show.html.tpl",
@@ -242,12 +217,11 @@ def show_photo(id):
 
 @app.route("/photos/<id>/print", methods = ("GET",))
 def print_photo(id):
-    url = _ensure_token()
+    url = _ensure_api()
     if url: return flask.redirect(url)
 
-    url = BASE_URL + "v1/media/%s" % id
-    contents_s = get_json(url)
-    media = contents_s.get("data", [])
+    api = _get_api()
+    media = api.get_media(id)
     print_image(media)
 
     return flask.redirect(
@@ -266,6 +240,10 @@ def handler_413(error):
 def handler_exception(error):
     return str(error)
 
+@app.errorhandler(instagram.appier.OAuthAccessError)
+def handler_oauth(error):
+    return str(error)
+
 def print_image(media):
     images = media.get("images", {})
     image = images.get("standard_resolution", {})
@@ -275,32 +253,16 @@ def print_image(media):
     data = quorum.get(url)
     util.print_data(data)
 
-def get_json(url, authenticate = True, **kwargs):
-    if authenticate: kwargs["access_token"] = flask.session["instashow.access_token"]
-    data = quorum.get_json(url, **kwargs)
-    return data
+def _ensure_api():
+    access_token = flask.session.get("ig.access_token", None)
+    if access_token: return
+    api = _get_api()
+    return api.oauth_authorize()
 
-def post_json(url, authenticate = True, **kwargs):
-    if authenticate: kwargs["access_token"] = flask.session["instashow.access_token"]
-    data = quorum.post_json(url, **kwargs)
-    return data
-
-def delete_json(url, authenticate = True, **kwargs):
-    if authenticate: kwargs["access_token"] = flask.session["instashow.access_token"]
-    data = quorum.delete_json(url, **kwargs)
-    return data
-
-def _ensure_token():
-    access_token = flask.session.get("instashow.access_token", None)
-    if access_token: return None
-
-    url = BASE_URL + "oauth/authorize/"
-    values = {
-        "client_id" : CLIENT_ID,
-        "redirect_uri" : REDIRECT_URL,
-        "response_type" : "code"
-    }
-
-    data = urllib.urlencode(values)
-    url = url + "?" + data
-    return url
+def _get_api():
+    access_token = flask.session and flask.session.get("ig.access_token", None)
+    user_id = flask.session and flask.session.get("ig.user_id", None)
+    api = util.get_api()
+    api.access_token = access_token
+    api.user_id = user_id
+    return api

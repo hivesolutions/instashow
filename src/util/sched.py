@@ -43,10 +43,9 @@ import shelve
 import threading
 import traceback
 
+from instashow import util
 from instashow import flask
-from instashow import quorum
 from instashow import print_image
-from instashow import BASE_URL
 
 SLEEP_TIME = 10.0
 """ The amount of time the loop should sleep between
@@ -116,9 +115,8 @@ class Scheduler(threading.Thread):
         # retrieves the recent media objects for the
         # selected tag, this should provide the basis
         # for the iteration tick operation
-        url = BASE_URL + "v1/tags/%s/media/recent" % self.tag
-        contents_s = quorum.get_json(url, access_token = self.access_token)
-        media = contents_s.get("data", [])
+        api = util.get_api(access_token = self.access_token)
+        media = api.media_tag(self.tag)
 
         # iterates over the complete set of media objects
         # in order to set the printing order for them
@@ -155,6 +153,6 @@ class Scheduler(threading.Thread):
         self.data.sync()
 
 def schedule_tag(tag, quota = QUOTA_USER):
-    access_token = flask.session["instashow.access_token"]
+    access_token = flask.session["ig.access_token"]
     scheduler = Scheduler(tag, access_token, quota = quota)
     scheduler.start()
