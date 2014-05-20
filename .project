@@ -3,6 +3,7 @@
 	<name>instashow</name>
 	<comment></comment>
 	<projects>
+		<project>instagram_api</project>
 		<project>quorum</project>
 	</projects>
 	<buildSpec>
