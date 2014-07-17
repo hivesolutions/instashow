@@ -12,7 +12,7 @@ cd .. && rm -rf instashow
 ```
 
 ```bash
-docker run --name instashow -i -t self/instashow
+docker run --name instashow -p 0.0.0.0:8080:8080 -i -t self/instashow
 ```
 
 ## Configuration
