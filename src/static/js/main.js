@@ -242,10 +242,20 @@
                                         ? jQuery("<div class=\"item\">"
                                                 + "<video src=\""
                                                 + resource.url
-                                                + "\" loop=\"1\" />" + "</div>")
+                                                + "\" loop=\"1\"></video>"
+                                                + "</div>")
                                         : jQuery("<div class=\"item\">"
                                                 + "<img src=\"" + resource.url
                                                 + "\" />" + "</div>");
+
+                                // creates the labels box that is going to be used
+                                // to display some information about the author
+                                var box = jQuery("<div class=\"box\">"
+                                        + "<h2>@" + media.user.username
+                                        + "</h2>" + "<h3>"
+                                        + media.user.full_name + "</h3>"
+                                        + "</div>");
+                                item.append(box)
 
                                 // creates the page element and adds it to the
                                 // list of pages for the current structure
