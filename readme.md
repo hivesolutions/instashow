@@ -11,6 +11,10 @@ docker build --no-cache -t self/instashow .
 cd .. && rm -rf omni
 ```
 
+```bash
+docker run --name instashow -i -t self/instashow
+```
+
 ## Configuration
 
 * `TITLE` - Top title for the slideshow presentation (eg: My photos)
