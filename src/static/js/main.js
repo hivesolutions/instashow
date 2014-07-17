@@ -42,6 +42,7 @@
         // retrieves the reference to the top level window component
         // to be able to access top level elements
         var _window = jQuery(window);
+        var _document = jQuery(document)
         var _html = jQuery("html");
 
         // ensures that no overflow exists for the current html component
@@ -108,12 +109,6 @@
                     // page element (repects the current photo)
                     var photoClone = _element.clone();
                     page.append(photoClone);
-                });
-
-        // registers for the resize event in the window to be
-        // able to run the update function in them
-        _window.resize(function() {
-                    update();
                 });
 
         // creates the update function that update and positions
@@ -289,77 +284,138 @@
                     });
         };
 
+        var setPosition = function(nextPosition) {
+            // retrieves the reference to the pages and to the image
+            // elements that are going to be used in the positioning
+            var pages = jQuery(".pages", matchedObject);
+            var images = jQuery(".page img, .page video", pages);
+
+            // retrievs the current status of the matched object as
+            // a set of position and count values
+            var position = matchedObject.data("position");
+            var count = matchedObject.data("count");
+
+            // retrieves the reference to the first image and
+            // retrieves its height for reference
+            var image = jQuery(images[0]);
+            var height = image.height();
+
+            // calculates the scroll top position in pixels that is going
+            // to be used in the scroll animation (should be an integer)
+            var scrollTop = nextPosition * height;
+
+            // in case the next position is the initial one must refresh
+            // the photos to the new ones
+            nextPosition == 0 && refreshPhotos();
+
+            // in case the current position is the same as the next one
+            // returns immediately to avoid the cross fade effect to the
+            // same index (this is not wanted as the screen flicks)
+            if (position == nextPosition) {
+                return;
+            }
+
+            // retrieves the reference to both the current and the next
+            // pages in the slideshow, to be able to use them in the
+            // cross fade effect
+            var current = jQuery(".page:nth-child(" + (position + 1) + ")",
+                    pages);
+            var next = jQuery(".page:nth-child(" + (nextPosition + 1) + ")",
+                    pages);
+
+            // runs the animation of the pages element "moving" the
+            // scrolling top of the element to the new scroll top
+            pages.animate({
+                        scrollTop : scrollTop + "px"
+                    }, {
+                        duration : 1000
+                    });
+
+            // hides the next panel and fade in and out the
+            // next and current panels (creating the cross fade
+            // effect for optimal experience)
+            next.hide();
+            next.fadeIn(1000);
+            current.fadeOut(1000, function() {
+                        current.show();
+                        var video = jQuery("video", current);
+                        video.length && video[0].pause();
+                    });
+
+            // tries to retrieve the video reference for the
+            // next page to be display and in case it
+            // exists starts playing the video
+            var video = jQuery("video", next);
+            video.length && video[0].play();
+
+            // updates the current status of the matched object
+            // with the next position of the slideshow
+            matchedObject.data("position", nextPosition);
+        };
+
+        var nextPosition = function() {
+            // retrievs the current status of the matched object as
+            // a set of position and count values
+            var position = matchedObject.data("position");
+            var count = matchedObject.data("count");
+
+            // calculates the next position in the slideshow and calls
+            // the proper function to trigger the animations and position
+            var nextPosition = position + 1 >= count ? 0 : position + 1;
+            setPosition(nextPosition);
+        };
+
+        var previousPosition = function() {
+            // retrievs the current status of the matched object as
+            // a set of position and count values
+            var position = matchedObject.data("position");
+            var count = matchedObject.data("count");
+
+            // calculates the previous position in the slideshow and calls
+            // the proper function to trigger the animations and position
+            var previousPosition = position - 1 < 0 ? count - 1 : position - 1;
+            setPosition(previousPosition);
+        };
+
+        // registers for the resize event in the window to be
+        // able to run the update function in them
+        _window.resize(onResize = function() {
+            update();
+        });
+        matchedObject.bind("destroyed", function() {
+                    _window.unbind("resize", onResize);
+                });
+
+        // registers for the key down event on the document
+        // element so that it's possible to manually control
+        // the flow of images/videos of the slideshow
+        _document.keydown(onKeyDown = function(event) {
+            var keyValue = event.keyCode ? event.keyCode : event.charCode
+                    ? event.charCode
+                    : event.which;
+            switch (keyValue) {
+                case 37 :
+                case 40 :
+                    previousPosition();
+                    break;
+                case 39 :
+                case 38 :
+                    nextPosition();
+                    break;
+            }
+        });
+        matchedObject.bind("destroyed", function() {
+                    _document.unbind("keydown", onKeyDown);
+                });
+
         // creates the interval that will be used for the sliding of the
         // slideshow element, this interval should loop to the beginning
-        setInterval(function() {
-                    // retrieves the reference to the pages and to the image
-                    // elements that are going to be used in the positioning
-                    var pages = jQuery(".pages", matchedObject);
-                    var images = jQuery(".page img, .page video", pages);
-
-                    // retrievs the current status of the matched object as
-                    // a set of position and count values
-                    var position = matchedObject.data("position");
-                    var count = matchedObject.data("count");
-
-                    // retrieves the reference to the first image and
-                    // retrieves its height for reference
-                    var image = jQuery(images[0]);
-                    var height = image.height();
-
-                    // calculates the next position in the slideshow and uses it
-                    // to calculate the apropriate scroll top position
-                    var nextPosition = position + 1 >= count ? 0 : position + 1;
-                    var scrollTop = nextPosition * height;
-
-                    // in case the next position is the initial one must refresh
-                    // the photos to the new ones
-                    nextPosition == 0 && refreshPhotos();
-
-                    // in case the current position is the same as the next one
-                    // returns immediately to avoid the cross fade effect to the
-                    // same index (this is not wanted as the screen flicks)
-                    if (position == nextPosition) {
-                        return;
-                    }
-
-                    // retrieves the reference to both the current and the next
-                    // pages in the slideshow, to be able to use them in the
-                    // cross fade effect
-                    var current = jQuery(".page:nth-child(" + (position + 1)
-                                    + ")", pages);
-                    var next = jQuery(".page:nth-child(" + (nextPosition + 1)
-                                    + ")", pages);
-
-                    // runs the animation of the pages element "moving" the
-                    // scrolling top of the element to the new scroll top
-                    pages.animate({
-                                scrollTop : scrollTop + "px"
-                            }, {
-                                duration : 1000
-                            });
-
-                    // hides the next panel and fade in and out the
-                    // next and current panels (creating the cross fade
-                    // effect for optimal experience)
-                    next.hide();
-                    next.fadeIn(1000);
-                    current.fadeOut(1000, function() {
-                                current.show();
-                                var video = jQuery("video", current);
-                                video.length && video[0].pause();
-                            });
-
-                    // tries to retrieve the video reference for the
-                    // next page to be display and in case it
-                    // exists starts playing the video
-                    var video = jQuery("video", next);
-                    video.length && video[0].play();
-
-                    // updates the current status of the matched object
-                    // with the next position of the slideshow
-                    matchedObject.data("position", nextPosition);
+        var interval = setInterval(function() {
+                    nextPosition();
                 }, timeout);
+        matchedObject.bind("destroyed", function() {
+                    clearInterval(interval);
+                });
 
         // retrieves the complete set of pages in the current object
         // this value will be used as the count of the object
