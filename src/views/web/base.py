@@ -75,7 +75,7 @@ def oauth():
 @app.route("/subscribe/<tag>", methods = ("GET",))
 def subscribe(tag):
     base_url = quorum.conf("BASE_URL")
-    callback_url = base_url + "notify"
+    callback_url = base_url + "/notify"
     api = _get_api()
     api.subscribe(
         object = "tag",
@@ -90,7 +90,7 @@ def subscribe(tag):
 @app.route("/unsubscribe/<tag>", methods = ("GET",))
 def unsubscribe(tag):
     base_url = quorum.conf("BASE_URL")
-    callback_url = base_url + "notify"
+    callback_url = base_url + "/notify"
     api = _get_api()
     api.unsubscribe(
         object = "tag",
