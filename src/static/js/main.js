@@ -285,12 +285,12 @@
         };
 
         // creates the interval that will be used for the sliding of the
-        // slideshow element
+        // slideshow element, this interval should loop to the beginning
         setInterval(function() {
                     // retrieves the reference to the pages and to the image
                     // elements that are going to be used in the positioning
                     var pages = jQuery(".pages", matchedObject);
-                    var images = jQuery(".page img", pages);
+                    var images = jQuery(".page img, .page video", pages);
 
                     // retrievs the current status of the matched object as
                     // a set of position and count values
@@ -341,7 +341,15 @@
                     next.fadeIn(1000);
                     current.fadeOut(1000, function() {
                                 current.show();
+                                var video = jQuery("video", current);
+                                video.length && video[0].pause();
                             });
+
+                    // tries to retrieve the video reference for the
+                    // next page to be display and in case it
+                    // exists starts playing the video
+                    var video = jQuery("video", next);
+                    video.length && video[0].play();
 
                     // updates the current status of the matched object
                     // with the next position of the slideshow
