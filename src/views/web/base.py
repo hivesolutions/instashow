@@ -45,25 +45,6 @@ from instashow import app
 from instashow import flask
 from instashow import quorum
 
-CLIENT_ID = "78ccf26cf6724f18840d078afc1ed591"
-""" The id of the instagram client to be used """
-
-CLIENT_SECRET = "b4104e1376c041129519f92db0785a40"
-""" The secret key value to be used to access the
-instagram api as the client """
-
-BASE_URL = "https://api.instagram.com/"
-""" The base url to be used to compose the various
-complete url values for the various operations """
-
-REDIRECT_URL = "http://hq.hive.pt:8585/oauth"
-""" The redirect base url to be used as the base value
-for the construction of the base url instances """
-
-CALLBACK_URL = "http://hq.hive.pt:8585/notify"
-""" The url to be used by the instagram server to notify
-the client (should be available externally) """
-
 @app.route("/", methods = ("GET",))
 @app.route("/index", methods = ("GET",))
 def index():
@@ -92,12 +73,14 @@ def oauth():
 
 @app.route("/subscribe/<tag>", methods = ("GET",))
 def subscribe(tag):
+    base_url = quorum.conf("BASE_URL")
+    callback_url = base_url + "notify"
     api = _get_api()
     api.subscribe(
         object = "tag",
         aspect = "media",
         object_id = tag,
-        callback_url = CALLBACK_URL
+        callback_url = callback_url
     )
     return flask.redirect(
         flask.url_for("index")
@@ -105,12 +88,14 @@ def subscribe(tag):
 
 @app.route("/unsubscribe/<tag>", methods = ("GET",))
 def unsubscribe(tag):
+    base_url = quorum.conf("BASE_URL")
+    callback_url = base_url + "notify"
     api = _get_api()
     api.unsubscribe(
         object = "tag",
         aspect = "media",
         object_id = tag,
-        callback_url = CALLBACK_URL
+        callback_url = callback_url
     )
     return flask.redirect(
         flask.url_for("index")
