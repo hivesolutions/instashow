@@ -8,7 +8,7 @@ Web application designed to show instagram images on projector.
 mkdir instashow && cd instashow
 wget https://github.com/hivesolutions/instashow/raw/master/Dockerfile
 docker build --no-cache -t self/instashow .
-cd .. && rm -rf omni
+cd .. && rm -rf instashow
 ```
 
 ```bash
