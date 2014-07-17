@@ -54,11 +54,13 @@ body.dark {
     background-color: #000000;
 }
 
-.images {
+.images,
+.videos {
     margin: 24px 0px 24px 0px;
 }
 
-.images img {
+.images img,
+.videos video {
     background: transparent url(../images/pattern.png) repeat left top;
     border-radius: 6px 6px 6px 6px;
     -moz-border-radius: 6px 6px 6px 6px;
@@ -70,11 +72,13 @@ body.dark {
     padding-bottom: none;
 }
 
-.image {
+.image,
+.video {
     margin: 24px 0px 24px 0px;
 }
 
-.image a:hover {
+.image a:hover,
+.video a:hover {
     border-bottom: none;
     padding-bottom: none;
 }

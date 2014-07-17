@@ -66,6 +66,7 @@ def oauth():
     access_token = api.oauth_access(code)
     flask.session["ig.access_token"] = access_token
     flask.session["ig.user_id"] = api.user_id
+    flask.session.permanent = True
 
     return flask.redirect(
         state or flask.url_for("index")
@@ -132,6 +133,8 @@ def slideshow_tag(tag):
     url = _ensure_api()
     if url: return flask.redirect(url)
 
+    title = quorum.conf("TITLE", "Title")
+    sub_title = quorum.conf("SUB_TITLE", "Sub Title")
     timeout = quorum.get_field("timeout", 10000, cast = int)
 
     api = _get_api()
@@ -143,6 +146,8 @@ def slideshow_tag(tag):
         sub_link = "slideshow",
         tag = tag,
         media = media,
+        title = title,
+        sub_title = sub_title,
         timeout = timeout
     )
 
