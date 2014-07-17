@@ -2,6 +2,15 @@
 
 Web application designed to show instagram images on projector.
 
+## Dockerfile
+
+```bash
+mkdir instashow && cd instashow
+wget https://github.com/hivesolutions/instashow/raw/master/Dockerfile
+docker build --no-cache -t self/instashow .
+cd .. && rm -rf omni
+```
+
 ## Configuration
 
 * `TITLE` - Top title for the slideshow presentation (eg: My photos)
