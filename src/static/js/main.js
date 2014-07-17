@@ -53,10 +53,10 @@
         var initial = jQuery(".initial", matchedObject);
         initial.addClass("page");
 
-        // retrieves the reference to the complete set of photos
+        // retrieves the reference to the complete set of items
         // and images to be used for manipulation
-        var photos = jQuery(".photo", matchedObject);
-        var images = jQuery("img", photos);
+        var items = jQuery(".item", matchedObject);
+        var images = jQuery("img, video", items);
 
         // creates the pages panel and add it to the currently
         // matched object for reference
@@ -68,9 +68,9 @@
         var holder = jQuery("<div class=\"holder\"></div>")
         matchedObject.append(holder);
 
-        // adds the complete set of photos to the holder in order
+        // adds the complete set of items to the holder in order
         // to store them for latter usage
-        holder.append(photos);
+        holder.append(items);
 
         // adds the the initial page at the begining of the pages
         // section (it's going to be the first one)
@@ -94,9 +94,9 @@
                     _element.attr("data-width", width);
                 });
 
-        // iterates over each of the photos to start creating the
+        // iterates over each of the items to start creating the
         // various pages that comprise the slideshow
-        photos.each(function(index, element) {
+        items.each(function(index, element) {
                     // retrieves the current element and creates a
                     // page element for it
                     var _element = jQuery(this);
@@ -128,7 +128,7 @@
             // the complete set of images to be displayed
             var pages = jQuery(".pages", matchedObject);
             var pageList = jQuery(".page", pages);
-            var images = jQuery(".page img", pages);
+            var images = jQuery(".page img, .page video", pages);
 
             // iterates over all the images to resize them into the
             // proper size as defined by the current viewport
@@ -215,7 +215,7 @@
 
                             // retrieves the complete set of pages that are displaying
                             // an image and then removes then (no longer needed)
-                            var images = jQuery(".page img", pages);
+                            var images = jQuery(".page img, .page video", pages);
                             var pagesList = images.parents(".page");
                             pagesList.remove();
 
@@ -223,28 +223,42 @@
                             // to be able to creates the page for their representation
                             for (var key in data) {
                                 // retrieves the media information for the current
-                                // key in iteration
+                                // key in iteration to be display in the screen
                                 var media = data[key];
 
-                                // creates the element that will contain the photo
+                                // in case the current value in iteration is not a valid
+                                // object structure it must be ignore to avoid problems
+                                if (typeof media != "object") {
+                                    continue;
+                                }
+
+                                // creates the element that will contain the item
                                 // elements using the provided standard resolution url
-                                var photo = jQuery("<div class=\"photo\">"
-                                        + "<img src=\""
-                                        + media.images.standard_resolution.url
-                                        + "\" />" + "</div>");
+                                // note that a video or image is created according to
+                                // the defined type in the media object
+                                var isVideo = media.type == "video";
+                                var item = isVideo
+                                        ? jQuery("<div class=\"item\">"
+                                                + "<video src=\""
+                                                + media.videos.standard_resolution.url
+                                                + "\" loop=\"1\" />" + "</div>")
+                                        : jQuery("<div class=\"item\">"
+                                                + "<img src=\""
+                                                + media.images.standard_resolution.url
+                                                + "\" />" + "</div>");
 
                                 // creates the page element and adds it to the
                                 // list of pages for the current structure
                                 var page = jQuery("<div class=\"page\"></div>");
                                 pages.append(page);
 
-                                // adds the newly created photo element to the new
+                                // adds the newly created item element to the new
                                 // page sets it as the only contents of it
-                                page.append(photo);
+                                page.append(item);
 
-                                // retrieve the image component out of the photo
+                                // retrieve the image component out of the item
                                 // element to be used in attribute changes
-                                var image = jQuery("img", photo);
+                                var image = jQuery("img, video", item);
 
                                 // retrieve the size of the image as both height
                                 // and width to change the attribute storage for it
