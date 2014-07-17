@@ -145,7 +145,7 @@
                         _height = parseInt(_height);
                         _width = parseInt(_width);
 
-                        // calculates the rations for the height and the width
+                        // calculates the ratios for the height and the width
                         // according to the heights and widths of both the window
                         // and the images in iteration
                         var ratioH = height / _height;
@@ -232,19 +232,24 @@
                                     continue;
                                 }
 
+                                // verifies the type of the current media and then uses it
+                                // to retrieve the proper reference to the resource object
+                                var isVideo = media.type == "video";
+                                var resource = isVideo
+                                        ? media.videos.standard_resolution
+                                        : media.images.standard_resolution;
+
                                 // creates the element that will contain the item
                                 // elements using the provided standard resolution url
                                 // note that a video or image is created according to
                                 // the defined type in the media object
-                                var isVideo = media.type == "video";
                                 var item = isVideo
                                         ? jQuery("<div class=\"item\">"
                                                 + "<video src=\""
-                                                + media.videos.standard_resolution.url
+                                                + resource.url
                                                 + "\" loop=\"1\" />" + "</div>")
                                         : jQuery("<div class=\"item\">"
-                                                + "<img src=\""
-                                                + media.images.standard_resolution.url
+                                                + "<img src=\"" + resource.url
                                                 + "\" />" + "</div>");
 
                                 // creates the page element and adds it to the
@@ -262,8 +267,8 @@
 
                                 // retrieve the size of the image as both height
                                 // and width to change the attribute storage for it
-                                var height = image.height() || 640;
-                                var width = image.width() || 640;
+                                var height = resource.height || 640;
+                                var width = resource.width || 640;
 
                                 // updates the height and the width of the current
                                 // element to the new height and width dimensions
