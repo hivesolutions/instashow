@@ -405,11 +405,11 @@
                     : event.which;
             switch (keyValue) {
                 case 37 :
-                case 40 :
+                case 38 :
                     previousPosition();
                     break;
                 case 39 :
-                case 38 :
+                case 40 :
                     nextPosition();
                     break;
             }
