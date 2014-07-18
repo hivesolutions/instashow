@@ -6,7 +6,7 @@
         <title>Instashow</title>
     {% endblock %}
 </head>
-<body class="ux">
+<body class="ux romantic">
     <div id="overlay" class="overlay"></div>
     <div id="header">
         {% block header %}

@@ -119,16 +119,23 @@ body.dark {
     font-size: 22px;
     font-weight: bold;
     line-height: 26px;
-    margin: 0px 0px 64px 0px;
+    margin: 0px 0px 42px 0px;
     text-transform: uppercase;
 }
 
 .instashow > .pages .page.initial p {
-    margin: 64px 0px 0px 0px;
+    font-weight: bold;
+    line-height: 28px;
+    margin: 42px 0px 0px 0px;
+    vertical-align: top;
 }
 
 .instashow > .pages .page.initial strong {
-    color: #ee7064;
+    font-size: 34px;
+}
+
+.instashow > .pages .page.initial .hashtag {
+    margin: 24px 0px 0px 0px;
 }
 
 .instashow > .pages .page.initial .instagram {
@@ -139,14 +146,14 @@ body.dark {
 }
 
 .instashow > .pages .page.initial .icon {
-    background: transparent url(../images/icon-white-small.png) no-repeat;
+    background: transparent none no-repeat;
     height: 64px;
     margin: 64px auto 0px auto;
     width: 64px;
 }
 
 .instashow > .pages .page .box {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: (0, 0, 0, 0.5);
     height: 48px;
     margin-top: -64px;
     padding: 8px 16px 8px 16px;
@@ -171,4 +178,12 @@ body.dark {
 
 .instashow > .holder {
     display: none;
+}
+
+.instashow.danielajoao > .pages .page.initial strong {
+    color: #ee7064;
+}
+
+.instashow.danielajoao > .pages .page.initial .icon {
+    background-image: url(../images/icon-white-small.png);
 }
