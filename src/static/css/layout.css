@@ -108,6 +108,7 @@ body.dark {
     color: #ffffff;
     font-family: "Gotham";
     font-size: 46px;
+    font-style: normal;
     line-height: 50px;
     margin: 24px 0px 6px 0px;
     text-transform: uppercase;
@@ -117,6 +118,7 @@ body.dark {
     color: #ffffff;
     font-family: "Gotham";
     font-size: 22px;
+    font-style: normal;
     font-weight: bold;
     line-height: 26px;
     margin: 0px 0px 42px 0px;

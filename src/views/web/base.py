@@ -133,8 +133,8 @@ def slideshow_tag(tag):
     url = _ensure_api()
     if url: return flask.redirect(url)
 
-    title = quorum.conf("TITLE", "Title")
-    sub_title = quorum.conf("SUB_TITLE", "Sub Title")
+    title = quorum.conf("TITLE", "Instashow")
+    sub_title = quorum.conf("SUB_TITLE", "Instagram + steroids")
     timeout = quorum.get_field("timeout", 10000, cast = int)
 
     api = _get_api()
