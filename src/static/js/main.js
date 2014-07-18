@@ -251,7 +251,8 @@
                                 // creates the labels box that is going to be used
                                 // to display some information about the author
                                 var box = jQuery("<div class=\"box\">"
-                                        + "<div class=\"left\">" + "<h2 class=\"double\">"
+                                        + "<div class=\"left\">"
+                                        + "<h2 class=\"double\">"
                                         + media.caption.text + "</h2>"
                                         + "</div>" + "<div class=\"right\">"
                                         + "<h2>@" + media.user.username
@@ -297,7 +298,21 @@
                     });
         };
 
-        var setPosition = function(nextPosition) {
+        var setPosition = function(nextPosition, duration) {
+            // tries to retrieve the pending (animation) flag and in
+            // case the value is set returns immediately no override
+            // in the current pipeline of animations, then sets the
+            // flag so that no more animations are allowed
+            var pending = matchedObject.data("pending");
+            if (pending) {
+                return;
+            }
+            matchedObject.data("pending", true);
+
+            // sets the initial value for the duration of the animation
+            // in case the value has not been provided
+            duration = duration || 1000;
+
             // retrieves the reference to the pages and to the image
             // elements that are going to be used in the positioning
             var pages = jQuery(".pages", matchedObject);
@@ -341,18 +356,19 @@
             pages.animate({
                         scrollTop : scrollTop + "px"
                     }, {
-                        duration : 1000
+                        duration : duration
                     });
 
             // hides the next panel and fade in and out the
             // next and current panels (creating the cross fade
             // effect for optimal experience)
             next.hide();
-            next.fadeIn(1000);
-            current.fadeOut(1000, function() {
+            next.fadeIn(duration);
+            current.fadeOut(duration, function() {
                         current.show();
                         var video = jQuery("video", current);
                         video.length && video[0].pause();
+                        matchedObject.data("pending", false);
                     });
 
             // tries to retrieve the video reference for the
