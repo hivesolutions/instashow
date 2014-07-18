@@ -153,7 +153,7 @@ body.dark {
 }
 
 .instashow > .pages .page .box {
-    background-color: (0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     height: 48px;
     margin-top: -64px;
     padding: 8px 16px 8px 16px;
