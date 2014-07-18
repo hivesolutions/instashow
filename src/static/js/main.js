@@ -361,6 +361,11 @@
             // updates the current status of the matched object
             // with the next position of the slideshow
             matchedObject.data("position", nextPosition);
+
+            // schedules the next iteration of the slideshow auto
+            // loopback so that the next position is going to be
+            // set after the timeout value of seconds passes
+            scheduleNext();
         };
 
         var nextPosition = function() {
@@ -385,6 +390,21 @@
             // the proper function to trigger the animations and position
             var previousPosition = position - 1 < 0 ? count - 1 : position - 1;
             setPosition(previousPosition);
+        };
+
+        var scheduleNext = function() {
+            // retrieves the currently defined timeout reference
+            // and in case it's valid clears it so that it becomes
+            // invalidated (not going to be performed)
+            var _timeout = matchedObject.data("timeout");
+            _timeout && clearTimeout(_timeout)
+
+            // creates the timeout function, registering it under
+            // the current object to be used latter for cancelation
+            _timeout = setTimeout(function() {
+                        nextPosition();
+                    }, timeout);
+            matchedObject.data("timeout", _timeout);
         };
 
         // registers for the resize event in the window to be
@@ -418,13 +438,12 @@
                     _document.unbind("keydown", onKeyDown);
                 });
 
-        // creates the interval that will be used for the sliding of the
-        // slideshow element, this interval should loop to the beginning
-        var interval = setInterval(function() {
-                    nextPosition();
-                }, timeout);
+        // registers for the detroyed event on the current
+        // object so that the currently registered timeout
+        // is cleared avoiding any further calls
         matchedObject.bind("destroyed", function() {
-                    clearInterval(interval);
+                    var _timeout = matchedObject.data("timeout");
+                    _timeout && clearTimeout(_timeout)
                 });
 
         // retrieves the complete set of pages in the current object
@@ -440,6 +459,11 @@
         // to position the various images in the initial
         // position
         update();
+
+        // schedules the initial iteration of the slideshow
+        // auto loopback so that the position is going to be
+        // set after the timeout value of seconds passes
+        scheduleNext();
     };
 })(jQuery);
 
