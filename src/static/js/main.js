@@ -251,10 +251,13 @@
                                 // creates the labels box that is going to be used
                                 // to display some information about the author
                                 var box = jQuery("<div class=\"box\">"
+                                        + "<div class=\"left\">" + "<h2 class=\"double\">"
+                                        + media.caption.text + "</h2>"
+                                        + "</div>" + "<div class=\"right\">"
                                         + "<h2>@" + media.user.username
                                         + "</h2>" + "<h3>"
                                         + media.user.full_name + "</h3>"
-                                        + "</div>");
+                                        + "</div>" + "</div>");
                                 item.append(box)
 
                                 // creates the page element and adds it to the
