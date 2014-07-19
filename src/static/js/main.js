@@ -333,8 +333,12 @@
             var scrollTop = nextPosition * height;
 
             // in case the next position is the initial one must refresh
-            // the photos to the new ones
-            nextPosition == 0 && refreshPhotos();
+            // the photos to the new ones (iteration cycle), note that
+            // this operation is delayed to the end of the transition so
+            // that no flickering problems occur while changing images
+            nextPosition == 0 && setTimeout(function() {
+                        refreshPhotos();
+                    }, duration);
 
             // in case the current position is the same as the next one
             // returns immediately to avoid the cross fade effect to the
