@@ -96,13 +96,12 @@ def print_image(file_path):
     return method(file_path)
 
 def print_image_posix(file_path):
+    # retrieves a connection to the cups server and uses it to gather
+    # the reference to the default printed, then uses it to print the
+    # image file directly as the printer is capable (as defined)
     connection = cups.Connection()
-    printers = connection.getPrinters()
-    for printer in printers:  
-        printers[printer]["device-uri"]
-
-    printer_name = printers.keys()[0]
-    connection.printFile(printer_name, file_path, "Python_Status_print", {})
+    printer_name = connection.getDefault()
+    connection.printFile(printer_name, file_path, file_path, {})
 
 def print_image_nt(file_path):
     # retrieves the name (as a string) of the currently
