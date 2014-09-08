@@ -84,6 +84,17 @@ def print_data(data, extension = ".jpg"):
     os.removedirs(dir_path)
 
 def print_image(file_path):
+    # retrieves the name of the current operative system and then
+    # uses it to retrieve the proper name of the method that is
+    # going to be used in the printing of the image and calls it
+    os_name = os.name
+    method = getattr(globals(), "print_image_" + os_name)
+    return method(file_path)
+
+def print_image_posix(file_path):
+    pass
+
+def print_image_win32(file_path):
     # retrieves the name (as a string) of the currently
     # defined default printer for the system
     printer_name = win32print.GetDefaultPrinter()
