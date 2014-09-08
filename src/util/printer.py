@@ -41,6 +41,9 @@ import os
 import uuid
 import tempfile
 
+try: import cups
+except: pass
+
 try: import win32ui
 except: pass
 
@@ -88,13 +91,20 @@ def print_image(file_path):
     # uses it to retrieve the proper name of the method that is
     # going to be used in the printing of the image and calls it
     os_name = os.name
-    method = getattr(globals(), "print_image_" + os_name)
+    method = globals().get("print_image_" + os_name, None)
+    if not method: raise RuntimeError("No printer method found")
     return method(file_path)
 
 def print_image_posix(file_path):
-    pass
+    connection = cups.Connection()
+    printers = connection.getPrinters()
+    for printer in printers:  
+        printers[printer]["device-uri"]
 
-def print_image_win32(file_path):
+    printer_name = printers.keys()[0]
+    connection.printFile(printer_name, file_path, "Python_Status_print", {})
+
+def print_image_nt(file_path):
     # retrieves the name (as a string) of the currently
     # defined default printer for the system
     printer_name = win32print.GetDefaultPrinter()
