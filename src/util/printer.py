@@ -56,6 +56,8 @@ except: pass
 try: import PIL.ImageWin
 except: pass
 
+from instashow import quorum
+
 HORZ_RES = 8
 VERT_RES = 10
 
@@ -97,10 +99,12 @@ def print_image(file_path):
 
 def print_image_posix(file_path):
     # retrieves a connection to the cups server and uses it to gather
-    # the reference to the default printed, then uses it to print the
+    # the reference to the proper printer, then uses it to print the
     # image file directly as the printer is capable (as defined)
+    printer = quorum.conf("PRINTER")
     connection = cups.Connection()
-    printer_name = connection.getDefault()
+    printer_name = printer if printer else connection.getDefault()
+    if not printer_name: raise RuntimeError("No default printer found")
     connection.printFile(printer_name, file_path, file_path, {})
 
 def print_image_nt(file_path):
