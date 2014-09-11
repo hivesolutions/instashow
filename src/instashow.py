@@ -55,5 +55,9 @@ app = quorum.load(
 from util import * #@UnusedWildImport
 from views import * #@UnusedWildImport
 
+@quorum.onrun
+def onrun():
+    util.schedule_init()
+
 if __name__ == "__main__":
     quorum.run(server = "netius")
