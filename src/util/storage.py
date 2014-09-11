@@ -45,8 +45,8 @@ def get_value(name, default):
         protocol = 2,
         writeback = True
     )
-    result = data.get(name, default)
-    data.close()
+    try: result = data.get(name, default)
+    finally: data.close()
     return result
 
 def set_value(name, value):
@@ -55,5 +55,5 @@ def set_value(name, value):
         protocol = 2,
         writeback = True
     )
-    data[name] = value
-    data.close()
+    try: data[name] = value
+    finally: data.close()
