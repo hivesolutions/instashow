@@ -68,6 +68,8 @@ def oauth():
     flask.session["ig.user_id"] = api.user_id
     flask.session.permanent = True
 
+    util.set_value("ig.access_token", access_token)
+
     return flask.redirect(
         state or flask.url_for("index")
     )

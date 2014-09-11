@@ -19,6 +19,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Hive Instashow System. If not, see <http://www.gnu.org/licenses/>.
 
+__author__ = "João Magalhães <joamag@hive.pt>"
+""" The author(s) of the module """
+
 __version__ = "1.0.0"
 """ The version of the module """
 
@@ -34,12 +37,23 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "GNU General Public License (GPL), Version 3"
 """ The license for the module """
 
-from . import base
-from . import printer
-from . import sched
-from . import storage
+import shelve
 
-from .base import *
-from .printer import *
-from .sched import *
-from .storage import *
+def get_value(name, default):
+    data = shelve.open(
+        "storage.shelve",
+        protocol = 2,
+        writeback = True
+    )
+    result = data.get(name, default)
+    data.close()
+    return result
+
+def set_value(name, value):
+    data = shelve.open(
+        "storage.shelve",
+        protocol = 2,
+        writeback = True
+    )
+    data[name] = value
+    data.close()

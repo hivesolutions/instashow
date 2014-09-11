@@ -71,23 +71,20 @@ class Scheduler(threading.Thread):
     execution to one at a time per process, avoiding
     unwanted behavior """
 
-    def __init__(self, tag, access_token, quota = QUOTA_USER, *args, **kwargs):
+    def __init__(self, tag, access_token, quota = QUOTA_USER, initial = 0, *args, **kwargs):
         threading.Thread.__init__(self, *args, **kwargs)
 
         self.tag = tag
         self.access_token = access_token
         self.max_quota = quota
+        self.initial = initial
 
     def run(self):
         threading.Thread.run(self)
 
         # opens the shelve based data file that is going to be used
         # to store the information regarding the printing scheduler
-        self.data = shelve.open(
-            "sched.shelve",
-            protocol = 2,
-            writeback = True
-        )
+        self.data = shelve.open("sched.shelve", protocol = 2, writeback = True)
 
         try:
             # sets the running flag to true and start the iteration
@@ -135,6 +132,13 @@ class Scheduler(threading.Thread):
             user_id = user["id"]
             quota = quotas.get(user_id, 0)
             if quota >= self.max_quota: continue
+            
+            # retrieves the created time value and compares it
+            # with the initial value in case the value is lower
+            # than the initial value the media is ignored
+            created_time = _media["created_time"]
+            created_time = int(created_time)
+            if created_time < self.initial: continue
 
             # runs the print image operation in the media object
             # and then appends the media identifier to the list
@@ -154,13 +158,16 @@ class Scheduler(threading.Thread):
         self.data.sync()
 
 def schedule_tag(tag, quota = QUOTA_USER, initial = 0):
-    access_token = flask.session["ig.access_token"]
-    scheduler = Scheduler(tag, access_token, quota = quota)
+    access_token = flask.session["ig.access_token"] if flask.session else None
+    access_token = util.get_value("ig.access_token", access_token)
+    if not access_token: return
+    quorum.debug("Starting tag scheduling for '%s'" % tag)
+    scheduler = Scheduler(tag, access_token, quota = quota, initial = initial)
     scheduler.start()
 
 def schedule_init():
-    tag = quorum.conf("SCHEDULE")
+    tag = quorum.conf("INSTAGRAM_SCHEDULE")
     if not tag: return
-    quota = quorum.conf("SCHEDULE_QUOTA", QUOTA_USER, cast = int)
-    initial = quorum.conf("SCHEDULE_INITIAL", 0, cast = int)
+    quota = quorum.conf("INSTAGRAM_QUOTA", QUOTA_USER, cast = int)
+    initial = quorum.conf("INSTAGRAM_INITIAL", 0, cast = int)
     schedule_tag(tag, quota = quota, initial = initial)
