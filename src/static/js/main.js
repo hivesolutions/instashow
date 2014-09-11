@@ -234,6 +234,13 @@
                                         ? media.videos.standard_resolution
                                         : media.images.standard_resolution;
 
+                                // retrieves the proper caption string value for the media
+                                // taking into account if such value is defined properly,
+                                // defaulting to an empty string otherwise 
+                                var caption = media.caption
+                                        ? media.caption.text
+                                        : "";
+
                                 // creates the element that will contain the item
                                 // elements using the provided standard resolution url
                                 // note that a video or image is created according to
@@ -252,13 +259,12 @@
                                 // to display some information about the author
                                 var box = jQuery("<div class=\"box\">"
                                         + "<div class=\"left\">"
-                                        + "<h2 class=\"double\">"
-                                        + media.caption.text + "</h2>"
-                                        + "</div>" + "<div class=\"right\">"
-                                        + "<h2>@" + media.user.username
-                                        + "</h2>" + "<h3>"
-                                        + media.user.full_name + "</h3>"
-                                        + "</div>" + "</div>");
+                                        + "<h2 class=\"double\">" + caption
+                                        + "</h2>" + "</div>"
+                                        + "<div class=\"right\">" + "<h2>@"
+                                        + media.user.username + "</h2>"
+                                        + "<h3>" + media.user.full_name
+                                        + "</h3>" + "</div>" + "</div>");
                                 item.append(box)
 
                                 // creates the page element and adds it to the
