@@ -132,7 +132,7 @@ class Scheduler(threading.Thread):
             user_id = user["id"]
             quota = quotas.get(user_id, 0)
             if quota >= self.max_quota: continue
-            
+
             # retrieves the created time value and compares it
             # with the initial value in case the value is lower
             # than the initial value the media is ignored

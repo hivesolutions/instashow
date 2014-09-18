@@ -236,7 +236,7 @@
 
                                 // retrieves the proper caption string value for the media
                                 // taking into account if such value is defined properly,
-                                // defaulting to an empty string otherwise 
+                                // defaulting to an empty string otherwise
                                 var caption = media.caption
                                         ? media.caption.text
                                         : "";
