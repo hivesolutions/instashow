@@ -1,4 +1,4 @@
 *.pyc
 *.shelve
 
-sched.shelve*
+storage.shelve*
