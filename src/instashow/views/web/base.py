@@ -238,6 +238,12 @@ def handler_oauth(error):
 
 @app.errorhandler(BaseException)
 def handler_exception(error):
+    import traceback
+    import sys
+    print("Exception in user code:")
+    print('-'*60)
+    traceback.print_exc(file=sys.stdout)
+    print('-'*60)
     return str(error)
 
 def print_image(media):
