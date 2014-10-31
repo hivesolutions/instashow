@@ -9,4 +9,4 @@ ENV SERVER netius
 ENV HOST 0.0.0.0
 ENV PORT 8080
 
-ENTRYPOINT ["usr/bin/python", "instashow/src/instashow.py"]
+ENTRYPOINT ["usr/bin/python", "instashow/src/instashow/main.py"]
