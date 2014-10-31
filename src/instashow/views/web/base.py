@@ -39,11 +39,11 @@ __license__ = "GNU General Public License (GPL), Version 3"
 
 import instagram
 
-import util
+from instashow import util
 
-from instashow import app
-from instashow import flask
-from instashow import quorum
+from instashow.main import app
+from instashow.main import flask
+from instashow.main import quorum
 
 @app.route("/", methods = ("GET",))
 @app.route("/index", methods = ("GET",))

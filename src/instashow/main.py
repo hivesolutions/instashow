@@ -52,12 +52,12 @@ app = quorum.load(
     PERMANENT_SESSION_LIFETIME = datetime.timedelta(31)
 )
 
-from util import * #@UnusedWildImport
-from views import * #@UnusedWildImport
+import instashow.util #@UnusedImport
+import instashow.views #@UnusedImport
 
 @quorum.onrun
 def onrun():
-    util.schedule_init()
+    instashow.util.schedule_init()
 
 if __name__ == "__main__":
     quorum.run(server = "netius")

@@ -39,7 +39,7 @@ __license__ = "GNU General Public License (GPL), Version 3"
 
 import instagram
 
-from instashow import quorum
+import quorum
 
 def get_api(access_token = None):
     api = instagram.Api(

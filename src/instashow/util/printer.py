@@ -41,6 +41,8 @@ import os
 import uuid
 import tempfile
 
+import quorum
+
 try: import cups
 except: pass
 
@@ -55,8 +57,6 @@ except: pass
 
 try: import PIL.ImageWin
 except: pass
-
-from instashow import quorum
 
 HORZ_RES = 8
 VERT_RES = 10

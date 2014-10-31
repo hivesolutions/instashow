@@ -36,4 +36,6 @@ __license__ = "GNU General Public License (GPL), Version 3"
 
 from . import base
 
-from .base import *
+from .base import index, about, oauth, subscribe, unsubscribe, notify, show_tag,\
+    slideshow_tag, latest_tag_json, schedule_tag, list_photos, show_photo, print_photo,\
+    handler_404, handler_413, handler_oauth, handler_exception, print_image

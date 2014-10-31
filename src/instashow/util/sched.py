@@ -43,10 +43,13 @@ import shelve
 import threading
 import traceback
 
-from instashow import util
-from instashow import flask
-from instashow import quorum
-from instashow import print_image
+import flask
+
+import quorum
+
+from instashow.util import base
+from instashow.util import printer
+from instashow.util import storage
 
 SLEEP_TIME = 10.0
 """ The amount of time the loop should sleep between
@@ -113,7 +116,7 @@ class Scheduler(threading.Thread):
         # retrieves the recent media objects for the
         # selected tag, this should provide the basis
         # for the iteration tick operation
-        api = util.get_api(access_token = self.access_token)
+        api = base.get_api(access_token = self.access_token)
         media = api.media_tag(self.tag)
 
         # iterates over the complete set of media objects
@@ -143,7 +146,7 @@ class Scheduler(threading.Thread):
             # runs the print image operation in the media object
             # and then appends the media identifier to the list
             # of printed elements currently present
-            print_image(_media)
+            printer.print_image(_media)
             printed.append(media_id)
 
             # updates the quota value for the user incrementing its
@@ -159,7 +162,7 @@ class Scheduler(threading.Thread):
 
 def schedule_tag(tag, quota = QUOTA_USER, initial = 0):
     access_token = flask.session["ig.access_token"] if flask.session else None
-    access_token = util.get_value("ig.access_token", access_token)
+    access_token = storage.get_value("ig.access_token", access_token)
     if not access_token: return
     quorum.debug("Starting tag scheduling for '%s'" % tag)
     scheduler = Scheduler(tag, access_token, quota = quota, initial = initial)
