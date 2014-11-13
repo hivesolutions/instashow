@@ -47,9 +47,9 @@ import flask
 
 import quorum
 
-from instashow.util import base
-from instashow.util import printer
-from instashow.util import storage
+from . import base
+from . import printer
+from . import storage
 
 SLEEP_TIME = 10.0
 """ The amount of time the loop should sleep between
