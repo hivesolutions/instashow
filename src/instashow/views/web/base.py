@@ -37,7 +37,7 @@ __copyright__ = "Copyright (c) 2008-2014 Hive Solutions Lda."
 __license__ = "GNU General Public License (GPL), Version 3"
 """ The license for the module """
 
-import instagram
+import appier
 
 from instashow import util
 
@@ -228,7 +228,7 @@ def handler_404(error):
 def handler_413(error):
     return str(error)
 
-@app.errorhandler(instagram.appier.OAuthAccessError)
+@app.errorhandler(appier.OAuthAccessError)
 def handler_oauth(error):
     if "ig.access_token" in flask.session: del flask.session["ig.access_token"]
     if "ig.user_id" in flask.session: del flask.session["ig.user_id"]
