@@ -137,9 +137,11 @@ def slideshow_tag(tag):
 
     title = quorum.conf("TITLE", "Instashow")
     sub_title = quorum.conf("SUB_TITLE", "Instagram + steroids")
+    image = quorum.conf("IMAGE", None)
     timeout = quorum.get_field("timeout", 10000, cast = int)
     title = quorum.get_field("title", title)
     sub_title = quorum.get_field("sub_title", sub_title)
+    image = quorum.get_field("image", image)
 
     api = _get_api()
     media = api.media_tag(tag)
@@ -152,6 +154,7 @@ def slideshow_tag(tag):
         media = media,
         title = title,
         sub_title = sub_title,
+        image = image,
         timeout = timeout
     )
 
