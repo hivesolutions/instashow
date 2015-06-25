@@ -140,6 +140,10 @@ body.dark {
     margin: 24px 0px 0px 0px;
 }
 
+.instashow > .pages .page.initial .banner {
+    margin: 32px 0px 32px 0px;
+}
+
 .instashow > .pages .page.initial .instagram {
     background: transparent url(../images/icon-instagram.png) no-repeat;
     height: 256px;

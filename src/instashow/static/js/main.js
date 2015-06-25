@@ -124,7 +124,7 @@
             // the complete set of images to be displayed
             var pages = jQuery(".pages", matchedObject);
             var pageList = jQuery(".page", pages);
-            var images = jQuery(".page img:not(), .page video", pages);
+            var images = jQuery(".page img, .page video", pages);
             images = images.filter(":not(.banner)");
 
             // iterates over all the images to resize them into the
