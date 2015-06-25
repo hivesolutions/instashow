@@ -58,6 +58,7 @@
         // and images to be used for manipulation
         var items = jQuery(".item", matchedObject);
         var images = jQuery("img, video", items);
+        images = images.filter(":not(.banner)");
 
         // creates the pages panel and add it to the currently
         // matched object for reference
@@ -123,7 +124,8 @@
             // the complete set of images to be displayed
             var pages = jQuery(".pages", matchedObject);
             var pageList = jQuery(".page", pages);
-            var images = jQuery(".page img, .page video", pages);
+            var images = jQuery(".page img:not(), .page video", pages);
+            images = images.filter(":not(.banner)");
 
             // iterates over all the images to resize them into the
             // proper size as defined by the current viewport
@@ -211,6 +213,7 @@
                             // retrieves the complete set of pages that are displaying
                             // an image and then removes then (no longer needed)
                             var images = jQuery(".page img, .page video", pages);
+                            images = images.filter(":not(.banner)");
                             var pagesList = images.parents(".page");
                             pagesList.remove();
 
@@ -279,6 +282,7 @@
                                 // retrieve the image component out of the item
                                 // element to be used in attribute changes
                                 var image = jQuery("img, video", item);
+                                image = image.filter(":not(.banner)");
 
                                 // retrieve the size of the image as both height
                                 // and width to change the attribute storage for it
@@ -323,6 +327,7 @@
             // elements that are going to be used in the positioning
             var pages = jQuery(".pages", matchedObject);
             var images = jQuery(".page img, .page video", pages);
+            images = images.filter(":not(.banner)");
 
             // retrievs the current status of the matched object as
             // a set of position and count values
