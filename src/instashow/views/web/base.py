@@ -38,6 +38,7 @@ __license__ = "GNU General Public License (GPL), Version 3"
 """ The license for the module """
 
 import appier
+import werkzeug
 
 from instashow import util
 
@@ -257,7 +258,9 @@ def _ensure_api():
     access_token = flask.session.get("ig.access_token", None)
     if access_token: return
     api = _get_api()
-    return api.oauth_authorize(state = flask.request.url)
+    url = flask.request.url
+    url = werkzeug.iri_to_uri(url)
+    return api.oauth_authorize(state = url)
 
 def _get_api():
     access_token = flask.session and flask.session.get("ig.access_token", None)
