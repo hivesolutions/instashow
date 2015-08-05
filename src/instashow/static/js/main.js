@@ -1,5 +1,5 @@
 // Hive Instashow System
-// Copyright (C) 2008-2015 Hive Solutions Lda.
+// Copyright (c) 2008-2015 Hive Solutions Lda.
 //
 // This file is part of Hive Instashow System.
 //
