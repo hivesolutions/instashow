@@ -12,7 +12,7 @@ ENV INSTAGRAM_ID
 ENV INSTAGRAM_SECRET
 ENV INSTAGRAM_REDIRECT_URL
 ENV TITLE Instashow
-ENV SUB_TITLE Instagram Slideshow
+ENV SUB_TITLE Slideshow
 
 ADD requirements.txt /
 ADD src /src
