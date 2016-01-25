@@ -81,36 +81,36 @@
         // iterates over each of the images in the container to update
         // the values of their original sizes
         images.each(function(index, element) {
-                    // retrieves the reference to the current image element
-                    // to be able to set its original size
-                    var _element = jQuery(this);
+            // retrieves the reference to the current image element
+            // to be able to set its original size
+            var _element = jQuery(this);
 
-                    // retrieve the size of the image as both height
-                    // and width to change the attribute storage for it
-                    var height = _element.height() || 640;
-                    var width = _element.width() || 640;
+            // retrieve the size of the image as both height
+            // and width to change the attribute storage for it
+            var height = _element.height() || 640;
+            var width = _element.width() || 640;
 
-                    // updates the height and the width of the current
-                    // element to the new height and width dimensions
-                    _element.attr("data-height", height);
-                    _element.attr("data-width", width);
-                });
+            // updates the height and the width of the current
+            // element to the new height and width dimensions
+            _element.attr("data-height", height);
+            _element.attr("data-width", width);
+        });
 
         // iterates over each of the items to start creating the
         // various pages that comprise the slideshow
         items.each(function(index, element) {
-                    // retrieves the current element and creates a
-                    // page element for it
-                    var _element = jQuery(this);
-                    var page = jQuery("<div class=\"page\"></div>");
-                    pages.append(page);
+            // retrieves the current element and creates a
+            // page element for it
+            var _element = jQuery(this);
+            var page = jQuery("<div class=\"page\"></div>");
+            pages.append(page);
 
-                    // clones the current photo element and adds
-                    // the contents of it to the currently created
-                    // page element (repects the current photo)
-                    var photoClone = _element.clone();
-                    page.append(photoClone);
-                });
+            // clones the current photo element and adds
+            // the contents of it to the currently created
+            // page element (repects the current photo)
+            var photoClone = _element.clone();
+            page.append(photoClone);
+        });
 
         // creates the update function that update and positions
         // the current layout according to the current constraints
@@ -130,37 +130,37 @@
             // iterates over all the images to resize them into the
             // proper size as defined by the current viewport
             images.each(function(index, element) {
-                        // retrieves the current element (image) in iteration
-                        // and the reference to the associated page element
-                        var _element = jQuery(this);
-                        var page = _element.parents(".page");
+                // retrieves the current element (image) in iteration
+                // and the reference to the associated page element
+                var _element = jQuery(this);
+                var page = _element.parents(".page");
 
-                        // retrieves the currently defined height and width,
-                        // should have been previously loaded
-                        var _height = _element.attr("data-height");
-                        var _width = _element.attr("data-width");
-                        _height = parseInt(_height);
-                        _width = parseInt(_width);
+                // retrieves the currently defined height and width,
+                // should have been previously loaded
+                var _height = _element.attr("data-height");
+                var _width = _element.attr("data-width");
+                _height = parseInt(_height);
+                _width = parseInt(_width);
 
-                        // calculates the ratios for the height and the width
-                        // according to the heights and widths of both the window
-                        // and the images in iteration
-                        var ratioH = height / _height;
-                        var ratioW = width / _width;
+                // calculates the ratios for the height and the width
+                // according to the heights and widths of both the window
+                // and the images in iteration
+                var ratioH = height / _height;
+                var ratioW = width / _width;
 
-                        // calculates the ration to be applied as the smallest of
-                        // both the height and the width rations
-                        var ratio = ratioH < ratioW ? ratioH : ratioW;
+                // calculates the ration to be applied as the smallest of
+                // both the height and the width rations
+                var ratio = ratioH < ratioW ? ratioH : ratioW;
 
-                        // updates the element and the pages height and width values
-                        // according to the selected ratio values
-                        _element.height(_height * ratio);
-                        _element.width(_width * ratio);
-                        pages.height(_height * ratio);
-                        pages.width(_width * ratio);
-                        pageList.height(_height * ratio);
-                        pageList.width(_width * ratio);
-                    });
+                // updates the element and the pages height and width values
+                // according to the selected ratio values
+                _element.height(_height * ratio);
+                _element.width(_width * ratio);
+                pages.height(_height * ratio);
+                pages.width(_width * ratio);
+                pageList.height(_height * ratio);
+                pageList.width(_width * ratio);
+            });
 
             // in case there's no images available in the current system
             // this is a special case and the size is updated using a differrent
@@ -193,119 +193,108 @@
             // and uses it for the update operation
             var url = matchedObject.attr("data-url");
             jQuery.ajax({
-                        url : url,
-                        success : function(data) {
-                            // in case no valid data has been received (probably due
-                            // to a problem in the communication) the retrieval is
-                            // ignored and the function returns immediately
-                            if (!data) {
-                                return;
-                            }
+                url: url,
+                success: function(data) {
+                    // in case no valid data has been received (probably due
+                    // to a problem in the communication) the retrieval is
+                    // ignored and the function returns immediately
+                    if (!data) {
+                        return;
+                    }
 
-                            // retrieves the current position and in case it's
-                            // not the first one returns immediately cannot change
-                            // the contents of the instashow after the first picture
-                            var position = matchedObject.data("position");
-                            if (position != 0) {
-                                return;
-                            }
+                    // retrieves the current position and in case it's
+                    // not the first one returns immediately cannot change
+                    // the contents of the instashow after the first picture
+                    var position = matchedObject.data("position");
+                    if (position != 0) {
+                        return;
+                    }
 
-                            // retrieves the complete set of pages that are displaying
-                            // an image and then removes then (no longer needed)
-                            var images = jQuery(".page img, .page video", pages);
-                            images = images.filter(":not(.banner)");
-                            var pagesList = images.parents(".page");
-                            pagesList.remove();
+                    // retrieves the complete set of pages that are displaying
+                    // an image and then removes then (no longer needed)
+                    var images = jQuery(".page img, .page video", pages);
+                    images = images.filter(":not(.banner)");
+                    var pagesList = images.parents(".page");
+                    pagesList.remove();
 
-                            // iterates over all the keys available for the data
-                            // to be able to creates the page for their representation
-                            for (var key in data) {
-                                // retrieves the media information for the current
-                                // key in iteration to be display in the screen
-                                var media = data[key];
+                    // iterates over all the keys available for the data
+                    // to be able to creates the page for their representation
+                    for (var key in data) {
+                        // retrieves the media information for the current
+                        // key in iteration to be display in the screen
+                        var media = data[key];
 
-                                // in case the current value in iteration is not a valid
-                                // object structure it must be ignore to avoid problems
-                                if (typeof media != "object") {
-                                    continue;
-                                }
-
-                                // verifies the type of the current media and then uses it
-                                // to retrieve the proper reference to the resource object
-                                var isVideo = media.type == "video";
-                                var resource = isVideo
-                                        ? media.videos.standard_resolution
-                                        : media.images.standard_resolution;
-
-                                // retrieves the proper caption string value for the media
-                                // taking into account if such value is defined properly,
-                                // defaulting to an empty string otherwise
-                                var caption = media.caption
-                                        ? media.caption.text
-                                        : "";
-
-                                // creates the element that will contain the item
-                                // elements using the provided standard resolution url
-                                // note that a video or image is created according to
-                                // the defined type in the media object
-                                var item = isVideo
-                                        ? jQuery("<div class=\"item\">"
-                                                + "<video src=\""
-                                                + resource.url
-                                                + "\" loop=\"1\"></video>"
-                                                + "</div>")
-                                        : jQuery("<div class=\"item\">"
-                                                + "<img src=\"" + resource.url
-                                                + "\" />" + "</div>");
-
-                                // creates the labels box that is going to be used
-                                // to display some information about the author
-                                var box = jQuery("<div class=\"box\">"
-                                        + "<div class=\"left\">"
-                                        + "<h2 class=\"double\">" + caption
-                                        + "</h2>" + "</div>"
-                                        + "<div class=\"right\">" + "<h2>@"
-                                        + media.user.username + "</h2>"
-                                        + "<h3>" + media.user.full_name
-                                        + "</h3>" + "</div>" + "</div>");
-                                item.append(box)
-
-                                // creates the page element and adds it to the
-                                // list of pages for the current structure
-                                var page = jQuery("<div class=\"page\"></div>");
-                                pages.append(page);
-
-                                // adds the newly created item element to the new
-                                // page sets it as the only contents of it
-                                page.append(item);
-
-                                // retrieve the image component out of the item
-                                // element to be used in attribute changes
-                                var image = jQuery("img, video", item);
-                                image = image.filter(":not(.banner)");
-
-                                // retrieve the size of the image as both height
-                                // and width to change the attribute storage for it
-                                var height = resource.height || 640;
-                                var width = resource.width || 640;
-
-                                // updates the height and the width of the current
-                                // element to the new height and width dimensions
-                                image.attr("data-height", height);
-                                image.attr("data-width", width);
-                            }
-
-                            // retrieves the current available list of pages for the
-                            // current matched object, the ones currently in display
-                            var pageList = jQuery(".pages > .page",
-                                    matchedObject);
-
-                            // updates the count of pages for the matched object, taking
-                            // into account the new pages to be displayed
-                            matchedObject.data("count", pageList.length)
-                            update();
+                        // in case the current value in iteration is not a valid
+                        // object structure it must be ignore to avoid problems
+                        if (typeof media != "object") {
+                            continue;
                         }
-                    });
+
+                        // verifies the type of the current media and then uses it
+                        // to retrieve the proper reference to the resource object
+                        var isVideo = media.type == "video";
+                        var resource = isVideo ? media.videos.standard_resolution : media.images
+                            .standard_resolution;
+
+                        // retrieves the proper caption string value for the media
+                        // taking into account if such value is defined properly,
+                        // defaulting to an empty string otherwise
+                        var caption = media.caption ? media.caption.text : "";
+
+                        // creates the element that will contain the item
+                        // elements using the provided standard resolution url
+                        // note that a video or image is created according to
+                        // the defined type in the media object
+                        var item = isVideo ? jQuery("<div class=\"item\">" + "<video src=\"" +
+                            resource.url + "\" loop=\"1\"></video>" + "</div>") : jQuery(
+                            "<div class=\"item\">" + "<img src=\"" + resource.url + "\" />" +
+                            "</div>");
+
+                        // creates the labels box that is going to be used
+                        // to display some information about the author
+                        var box = jQuery("<div class=\"box\">" + "<div class=\"left\">" +
+                            "<h2 class=\"double\">" + caption + "</h2>" + "</div>" +
+                            "<div class=\"right\">" + "<h2>@" + media.user.username +
+                            "</h2>" + "<h3>" + media.user.full_name + "</h3>" + "</div>" +
+                            "</div>");
+                        item.append(box)
+
+                        // creates the page element and adds it to the
+                        // list of pages for the current structure
+                        var page = jQuery("<div class=\"page\"></div>");
+                        pages.append(page);
+
+                        // adds the newly created item element to the new
+                        // page sets it as the only contents of it
+                        page.append(item);
+
+                        // retrieve the image component out of the item
+                        // element to be used in attribute changes
+                        var image = jQuery("img, video", item);
+                        image = image.filter(":not(.banner)");
+
+                        // retrieve the size of the image as both height
+                        // and width to change the attribute storage for it
+                        var height = resource.height || 640;
+                        var width = resource.width || 640;
+
+                        // updates the height and the width of the current
+                        // element to the new height and width dimensions
+                        image.attr("data-height", height);
+                        image.attr("data-width", width);
+                    }
+
+                    // retrieves the current available list of pages for the
+                    // current matched object, the ones currently in display
+                    var pageList = jQuery(".pages > .page",
+                        matchedObject);
+
+                    // updates the count of pages for the matched object, taking
+                    // into account the new pages to be displayed
+                    matchedObject.data("count", pageList.length)
+                    update();
+                }
+            });
         };
 
         var setPosition = function(nextPosition, duration) {
@@ -348,8 +337,8 @@
             // this operation is delayed to the end of the transition so
             // that no flickering problems occur while changing images
             nextPosition == 0 && setTimeout(function() {
-                        refreshPhotos();
-                    }, duration);
+                refreshPhotos();
+            }, duration);
 
             // in case the current position is the same as the next one
             // returns immediately to avoid the cross fade effect to the
@@ -362,17 +351,17 @@
             // pages in the slideshow, to be able to use them in the
             // cross fade effect
             var current = jQuery(".page:nth-child(" + (position + 1) + ")",
-                    pages);
+                pages);
             var next = jQuery(".page:nth-child(" + (nextPosition + 1) + ")",
-                    pages);
+                pages);
 
             // runs the animation of the pages element "moving" the
             // scrolling top of the element to the new scroll top
             pages.animate({
-                        scrollTop : scrollTop + "px"
-                    }, {
-                        duration : duration
-                    });
+                scrollTop: scrollTop + "px"
+            }, {
+                duration: duration
+            });
 
             // hides the next panel and fade in and out the
             // next and current panels (creating the cross fade
@@ -380,11 +369,11 @@
             next.hide();
             next.fadeIn(duration);
             current.fadeOut(duration, function() {
-                        current.show();
-                        var video = jQuery("video", current);
-                        video.length && video[0].pause();
-                        matchedObject.data("pending", false);
-                    });
+                current.show();
+                var video = jQuery("video", current);
+                video.length && video[0].pause();
+                matchedObject.data("pending", false);
+            });
 
             // tries to retrieve the video reference for the
             // next page to be display and in case it
@@ -436,8 +425,8 @@
             // creates the timeout function, registering it under
             // the current object to be used latter for cancelation
             _timeout = setTimeout(function() {
-                        nextPosition();
-                    }, timeout);
+                nextPosition();
+            }, timeout);
             matchedObject.data("timeout", _timeout);
         };
 
@@ -447,38 +436,36 @@
             update();
         });
         matchedObject.bind("destroyed", function() {
-                    _window.unbind("resize", onResize);
-                });
+            _window.unbind("resize", onResize);
+        });
 
         // registers for the key down event on the document
         // element so that it's possible to manually control
         // the flow of images/videos of the slideshow
         _document.keydown(onKeyDown = function(event) {
-            var keyValue = event.keyCode ? event.keyCode : event.charCode
-                    ? event.charCode
-                    : event.which;
+            var keyValue = event.keyCode ? event.keyCode : event.charCode ? event.charCode : event.which;
             switch (keyValue) {
-                case 37 :
-                case 38 :
+                case 37:
+                case 38:
                     previousPosition();
                     break;
-                case 39 :
-                case 40 :
+                case 39:
+                case 40:
                     nextPosition();
                     break;
             }
         });
         matchedObject.bind("destroyed", function() {
-                    _document.unbind("keydown", onKeyDown);
-                });
+            _document.unbind("keydown", onKeyDown);
+        });
 
         // registers for the detroyed event on the current
         // object so that the currently registered timeout
         // is cleared avoiding any further calls
         matchedObject.bind("destroyed", function() {
-                    var _timeout = matchedObject.data("timeout");
-                    _timeout && clearTimeout(_timeout)
-                });
+            var _timeout = matchedObject.data("timeout");
+            _timeout && clearTimeout(_timeout)
+        });
 
         // retrieves the complete set of pages in the current object
         // this value will be used as the count of the object
@@ -514,8 +501,8 @@
 })(jQuery);
 
 jQuery(document).ready(function() {
-            var _body = jQuery("body");
-            _body.bind("applied", function(event, base) {
-                        base.instashow_apply();
-                    });
-        });
+    var _body = jQuery("body");
+    _body.bind("applied", function(event, base) {
+        base.instashow_apply();
+    });
+});
