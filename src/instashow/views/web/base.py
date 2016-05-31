@@ -242,7 +242,7 @@ def handler_oauth(error):
         flask.request.url
     )
 
-@app.errorhandler(BaseException)
+@app.errorhandler(Exception)
 def handler_exception(error):
     return str(error)
 
