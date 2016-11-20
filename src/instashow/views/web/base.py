@@ -188,7 +188,7 @@ def list_photos():
     if url: return flask.redirect(url)
 
     api = _get_api()
-    media = api.popular_media()
+    media = api.media_tag("popular")
 
     return flask.render_template(
         "photos/list.html.tpl",
