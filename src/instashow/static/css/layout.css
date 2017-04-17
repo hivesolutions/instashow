@@ -67,7 +67,7 @@ body.dark {
     -webkit-border-radius: 6px 6px 6px 6px;
 }
 
-.images a:hover {
+.images a {
     border-bottom: none;
     padding-bottom: none;
 }
