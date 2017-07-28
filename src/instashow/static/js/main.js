@@ -30,7 +30,7 @@
 
         // returns immediately in case no instashow exists
         // for the current selection structure
-        if (matchedObject.length == 0) {
+        if (matchedObject.length === 0) {
             return;
         }
 
@@ -165,7 +165,7 @@
             // in case there's no images available in the current system
             // this is a special case and the size is updated using a differrent
             // strategy to avoid problems
-            if (images.length == 0) {
+            if (images.length === 0) {
                 pages.height(height);
                 pages.width(width);
                 pageList.height(height);
@@ -206,7 +206,7 @@
                     // not the first one returns immediately cannot change
                     // the contents of the instashow after the first picture
                     var position = matchedObject.data("position");
-                    if (position != 0) {
+                    if (position !== 0) {
                         return;
                     }
 
@@ -226,13 +226,13 @@
 
                         // in case the current value in iteration is not a valid
                         // object structure it must be ignore to avoid problems
-                        if (typeof media != "object") {
+                        if (typeof media !== "object") {
                             continue;
                         }
 
                         // verifies the type of the current media and then uses it
                         // to retrieve the proper reference to the resource object
-                        var isVideo = media.type == "video";
+                        var isVideo = media.type === "video";
                         var resource = isVideo ? media.videos.standard_resolution : media.images
                             .standard_resolution;
 
@@ -336,14 +336,14 @@
             // the photos to the new ones (iteration cycle), note that
             // this operation is delayed to the end of the transition so
             // that no flickering problems occur while changing images
-            nextPosition == 0 && setTimeout(function() {
+            nextPosition === 0 && setTimeout(function() {
                 refreshPhotos();
             }, duration);
 
             // in case the current position is the same as the next one
             // returns immediately to avoid the cross fade effect to the
             // same index (this is not wanted as the screen flicks)
-            if (position == nextPosition) {
+            if (position === nextPosition) {
                 return;
             }
 
