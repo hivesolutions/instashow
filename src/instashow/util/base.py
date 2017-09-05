@@ -42,7 +42,7 @@ import instagram
 import quorum
 
 def get_api(access_token = None):
-    api = instagram.Api(
+    api = instagram.API(
         client_id = quorum.conf("INSTAGRAM_ID"),
         client_secret = quorum.conf("INSTAGRAM_SECRET"),
         redirect_url = quorum.conf("INSTAGRAM_REDIRECT_URL")
