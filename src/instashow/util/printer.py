@@ -44,19 +44,19 @@ import tempfile
 import quorum
 
 try: import cups
-except: pass
+except ImportError: pass
 
 try: import win32ui
-except: pass
+except ImportError: pass
 
 try: import win32print
-except: pass
+except ImportError: pass
 
 try: import PIL.Image
-except: pass
+except ImportError: pass
 
 try: import PIL.ImageWin
-except: pass
+except ImportError: pass
 
 HORZ_RES = 8
 VERT_RES = 10

@@ -98,7 +98,7 @@ class Scheduler(threading.Thread):
             while self.running:
                 Scheduler.global_lock.acquire()
                 try: self.step()
-                except: traceback.print_exc(file = sys.stdout)
+                except Exception: traceback.print_exc(file = sys.stdout)
                 finally: Scheduler.global_lock.release()
                 time.sleep(SLEEP_TIME)
         finally:
