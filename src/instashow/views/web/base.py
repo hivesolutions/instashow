@@ -250,7 +250,7 @@ def print_image(media):
     images = media.get("images", {})
     image = images.get("standard_resolution", {})
     url = image.get("url", None)
-    if not url: raise RuntimeError("No url available for image")
+    if not url: raise RuntimeError("No URL available for image")
     data = quorum.get(url)
     util.print_data(data)
 
